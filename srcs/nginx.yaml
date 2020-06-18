@@ -1,22 +1,52 @@
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx
+  labels:
+   app: nginx
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app: nginx
-  replicas: 1 # tells deployment to run 1 pods matching the template
   template:
     metadata:
       labels:
         app: nginx
     spec:
       containers:
-      - name: nginx
-        image: nginx_alpine
-        ports:
-        - containerPort: 80
-          name: http
-        - containerPort: 443
-          name: https
+        - name: nginx
+          image: nginx_alpine
+          imagePullPolicy: Never
+          resources:
+              requests:
+                memory: "64Mi"
+                cpu: "250m"
+              limits:
+                memory: "128Mi"
+                cpu: "500m"
+          ports:
+          - containerPort: 80
+            name: http
+          - containerPort: 443
+            name: https
+          - containerPort: 22000
+            name: ssh
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    app: nginx
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: http
+    - protocol: TCP
+      port: 443
+      targetPort: 443
+      name: https

@@ -1,0 +1,3 @@
+secretGenerator:
+resources:
+- nginx.yaml

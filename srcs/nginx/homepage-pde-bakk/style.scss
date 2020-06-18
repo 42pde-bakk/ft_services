@@ -1,0 +1,73 @@
+$primary-colour: #57585a;
+$secondary-colour: #171b1d;
+
+%ul {
+    list-style: none;
+}
+
+%li {
+    text-align: center;
+    color: white;
+}
+
+.lang_button {
+    list-style-type: none;
+}
+
+.container {
+    height: 84px;
+}
+
+#navbar-table {
+    width: 90%;
+    border: outset;
+    background-color: #b0aca9;
+}
+
+ul {
+    @extend %ul;
+}
+
+li { 
+    @extend %li;
+}
+
+.grad {
+    background-image: linear-gradient(to bottom right, $primary-colour, $secondary-colour);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: white;
+    text-align:center;
+}
+
+br {
+    line-height: 10px;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+:lang(en) {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    img.center {
+        width: 100%;
+    }
+}
+
+#Jairuslist {
+  ul {
+   @extend %ul;
+  }
+
+  li {
+   @extend %li;
+    }
+}

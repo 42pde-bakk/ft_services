@@ -1,0 +1,4 @@
+Port 22000
+PermitRootLogin yes
+PasswordAuthentication yes
+Subsystem   sftp /usr/lib/openssh/sftp-server

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./style.css">
+        <link rel="icon" href="./pictures/rest/omulder.png">
+
+        <title lang="cn">皮尔的网站</title>
+        <title lang="en">Peers page</title>
+    </head>
+    <body class=grad>
+        <div class="container">
+            <table id="navbar-table" align="center">
+                <tr>
+                    <th><a href="index.html">Home</a></li></th>
+                    <th><a href="photos.html">Gallery</a></li></th>
+                    <th><a href="jairus.html">Jairus</a></th>
+                    <th><a href="blog.html">Blog</a></th>
+                    <th onclick="toggleLanguage('English')" class="lang_button"><a href="#"><img src="pictures/rest/uk.png" height="15px"></a></th>
+                    <th onclick="toggleLanguage('Chinese')" class="lang_button"><a href="#"><img src="pictures/rest/cn.png" height="15px"></a></th>
+                </tr>
+           </table>
+       </div>
+       <h1 lang="cn">欢迎来到沃尔时尚博客</h1>
+       <h1 lang="en">Welcome to my fashion blog</h1>
+       <img src="./pictures/fashion/fashion.png" class="center">
+
+       <h5 style="color: pink;">Thank you for visiting. Please come again!<span class="badge badge-secondary"><img src="https://media1.tenor.com/images/fca608525699df213af65a7748062b04/tenor.gif?itemid=11455738" height="50px"></span></h5>
+    </body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        function toggleLanguage(language) {
+            let description = document.getElementById("description");
+            if (language === "English") {
+                $('[lang="cn"]').hide();
+                $('[lang="en"]').show();
+            }
+            else {
+                $('[lang="en"]').hide();
+                $('[lang="cn"]').show();
+            }
+        }
+    </script>
+</html>

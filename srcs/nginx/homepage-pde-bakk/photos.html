@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./photos.css">
+    <link rel="icon" href="./pictures/rest/omulder.png">
+
+    <title lang="cn">皮尔的网站</title>
+    <title lang="en">Peers page</title>
+
+<body class="grad">
+    <div class="container">
+        <table id="navbar-table" align="center">
+            <tr>
+                <th><a href="index.html">Home</a></li></th>
+                <th><a href="photos.html">Gallery</a></li></th>
+                <th><a href="jairus.html">Jairus</a></th>
+                <th><a href="blog.html">Blog</a></th>
+                <th onclick="toggleLanguage('English')" class="lang_button"><a href="#"><img src="pictures/rest/uk.png" height="15px"></a></th>
+                <th onclick="toggleLanguage('Chinese')" class="lang_button"><a href="#"><img src="pictures/rest/cn.png" height="15px"></a></th>
+            </tr>
+       </table>
+   </div>
+
+<div class="container">
+    <h2 lang="en">Some pictures</h2>
+    <h2 lang="cn">一些张照片</h2>
+</div>
+    <!-- Slideshow container-->
+<div class="slideshow-container">
+
+    <!-- Full-width images with number and caption text-->
+    <div class="mySlides">
+        <div class="numbertext">1 / 9</div>
+        <img src="pictures/gallery/class.jpg" style="width:100%">
+        <div class="text">This is a small part of my class, dont think I have a more complete picture though. 我想你们都</div>
+    </div>
+
+    <div class="mySlides">
+        <div class="numbertext">2 / 9</div>
+        <img src="pictures/gallery/pengyou.jpg" style="width:100%">
+        <div class="text">Also not complete, but this was us singing a Chinese song in the graduation ceremony 可爱啊!</div>
+    </div>
+
+    <div class="mySlides">
+        <div class="numbertext">3 / 9</div>
+        <img src="pictures/gallery/A2.jpg" style="width:100%">
+        <div class="text">The boys</div>
+    </div>
+
+    <div class="mySlides">
+        <div class="numbertext">4 / 9</div>
+        <img src="pictures/gallery/bambine.jpg" style="width:100%">
+        <div class="text">Happy little family. 我的家人</div>
+    </div>
+
+    <div class="mySlides">
+        <div class="numbertext">5 / 9</div>
+        <img src="pictures/gallery/momanddad.jpg" style="width:100%">
+        <div class="text">Gard and Me. 皮尔和高德</div>
+    </div>
+
+    <div class="mySlides">
+        <div class="numbertext">6 / 9</div>
+        <img src="pictures/gallery/saranghae.jpg" style="width:100%">
+        <div class="text">可爱啊</div>
+    </div>
+
+    <div class="mySlides">
+        <div class="numbertext">7 / 9</div>
+        <img src="pictures/gallery/greatwallgroup.jpg" style="width:100%">
+        <div class="text">We went camping on top of the great wall. Amazing experience!</div>
+    </div>
+
+    <div class="mySlides">
+        <div class="numbertext">8 / 9</div>
+        <img src="pictures/gallery/greatwalltents.jpg" style="width:100%">
+        <div class="text">Here are our tents</div>
+    </div>
+
+    <div class="mySlides">
+        <div class="numbertext">8 / 9</div>
+        <img src="pictures/gallery/italianfamily.jpg" style="width:100%">
+        <div class="text">My Italian family.</div>
+    </div>
+
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+    <!-- Dots and circles-->
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+        <span class="dot" onclick="currentSlide(4)"></span>
+        <span class="dot" onclick="currentSlide(5)"></span>
+        <span class="dot" onclick="currentSlide(6)"></span>
+        <span class="dot" onclick="currentSlide(7)"></span>
+        <span class="dot" onclick="currentSlide(8)"></span>
+        <span class="dot" onclick="currentSlide(9)"></span>
+    </div>
+</div>
+
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+    
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+    
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+    
+    function showSlides(n) {
+      var i;
+      var slides = document.getElementsByClassName("mySlides");
+      var dots = document.getElementsByClassName("dot");
+      if (n > slides.length) {slideIndex = 1}    
+      if (n < 1) {slideIndex = slides.length}
+      for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";  
+      }
+      for (i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+      }
+      slides[slideIndex-1].style.display = "block";  
+      dots[slideIndex-1].className += " active";
+    }
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    function toggleLanguage(language) {
+        let description = document.getElementById("description");
+        if (language === "English") {
+            $('[lang="cn"]').hide();
+            $('[lang="en"]').show();
+        }
+        else {
+            $('[lang="en"]').hide();
+            $('[lang="cn"]').show();
+        }
+    }
+</script>
+
+<h5 style="color: pink;">Thank you for visiting. Please come again!<span class="badge badge-secondary"><img src="https://media1.tenor.com/images/fca608525699df213af65a7748062b04/tenor.gif?itemid=11455738" height="50px"></span></h5>
+</body>
+</html> 
