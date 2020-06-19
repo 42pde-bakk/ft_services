@@ -12,14 +12,14 @@ minikube start --vm-driver=virtualbox \
 --extra-config=kubelet.authentication-token-webhook=true
 
 minikube addons enable ingress
-# minikube addons enable dashboard
+minikube addons enable dashboard
 
 eval $(minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)
 
 docker build -t nginx_alpine ./srcs/nginx/
 
-./apply.sh
+# ./apply.sh
 
 echo "\n\nHier: http://$MINIKUBE_IP"
 # minikube dashboard
