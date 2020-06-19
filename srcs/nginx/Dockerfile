@@ -11,21 +11,12 @@ RUN adduser -D -g 'www' www \
 	&& chown -R www:www /var/lib/nginx \
 	&& chown -R www:www /www
 
-
-# RUN addgroup sshgroup \
-# 	&& adduser -D peer \
-# 	&& echo "peer:damsko" | chpasswd \
-# 	&& ssh-keygen -A
-	
-#SSH
-COPY sshd_config /etc/ssh/sshd_config
-
 # SSL
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/C=NL/ST=Noord-Holland/O=Codam/CN=services' -keyout /etc/ssl/services.key -out /etc/ssl/services.crt
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/C=NL/ST=Noord-Holland/O=Codam/CN=ft_services'  -keyout /etc/ssl/localhost.key -out /etc/ssl/localhost.crt
 
 COPY nginx.conf /etc/nginx/
-COPY homepage-pde-bakk/* /www/
+COPY homepage-pde-bakk/ /www/.
 
-EXPOSE 80 443 22000 
+EXPOSE 80 443 
 
 CMD ["nginx", "-g", "daemon off;"]

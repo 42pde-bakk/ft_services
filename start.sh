@@ -2,24 +2,24 @@
 # mkdir -p ~/goinfre/minikube
 # ln -s ~/goinfre/minikube ~/.minikube
 
+# open --background -a Docker
+
 minikube delete
 
-minikube start --vm-driver=virtualbox
+minikube start --vm-driver=virtualbox \
+--bootstrapper=kubeadm \
+--extra-config=apiserver.service-node-port-range=1-30000 \
+--extra-config=kubelet.authentication-token-webhook=true
+
 minikube addons enable ingress
-minikube addons enable dashboard
-
-cd srcs
-
-minikube dashboard &
+# minikube addons enable dashboard
 
 eval $(minikube docker-env)
-
 export MINIKUBE_IP=$(minikube ip)
 
-sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" nginx/tmp.html > nginx/index.html
+docker build -t nginx_alpine ./srcs/nginx/
 
-docker build -t nginx_alpine nginx/
+./apply.sh
 
-kubectl apply -k ./
-
-echo "\n\n\nLink to the site: http://$MINIKUBE_IP"
+echo "\n\nHier: http://$MINIKUBE_IP"
+# minikube dashboard
