@@ -5,7 +5,7 @@ metadata:
   labels:
    app: nginx
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: nginx
@@ -32,7 +32,9 @@ spec:
             name: https
           - containerPort: 22000
             name: ssh
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
