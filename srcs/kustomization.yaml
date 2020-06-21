@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - nginx.yaml
 - ingress.yaml
-- ftps.yaml
 - influxdb.yaml
+- ftps.yaml
 - grafana.yaml
+- wordpress.yaml

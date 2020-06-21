@@ -4,13 +4,12 @@
 
 # open --background -a Docker
 
-# ./clean.sh
 minikube delete
 
 minikube start --vm-driver=virtualbox \
---extra-config=apiserver.service-node-port-range=1-35000 \
---bootstrapper=kubeadm \
---extra-config=kubelet.authentication-token-webhook=true
+--extra-config=apiserver.service-node-port-range=1-35000
+# --bootstrapper=kubeadm \
+# --extra-config=kubelet.authentication-token-webhook=true
 
 minikube addons enable ingress
 minikube addons enable dashboard
@@ -18,17 +17,18 @@ minikube addons enable dashboard
 echo "Eval..."
 eval $(minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)
-IP=$(kubectl get node -o=custom-columns='DATA:status.addresses[0].address' | sed -n 2p)
-printf "Minikube IP: ${MINIKUBE_IP}, get node: ${IP}\n"
+printf "Minikube IP: ${MINIKUBE_IP}\n"
 
 sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html > srcs/nginx/homepage-pde-bakk/index.html
+sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/wordpress/tmpwpconfig.php > srcs/wordpress/wp-config.php
 echo "Building images..."
 docker build -t nginx_alpine ./srcs/nginx/
+docker build -t influxdb_alpine ./srcs/influxdb
 docker build -t ftps_alpine --build-arg IP=${IP} ./srcs/ftps/
-docker build -t service_influxdb ./srcs/influxdb
 docker build -t grafana_alpine ./srcs/grafana
+docker build -t wordpress_alpine ./srcs/wordpress --build-arg IP=${IP}
 
-sleep 10
+sleep 5
 kubectl apply -k ./srcs/
 # ./apply.sh
 

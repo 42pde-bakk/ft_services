@@ -1,3 +1,5 @@
+# volumeMode: Filesystem
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -17,12 +19,13 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: influxdb
+  name: influxdb-pvc # maybe change to influxdb-pvc
   labels:
     app: influxdb
 spec:
   accessModes:
   - ReadWriteOnce
+  volumeMode: Filesystem
   resources:
     requests:
       storage: 2Gi
@@ -45,7 +48,7 @@ spec:
     spec:
       containers:
       - name: influxdb
-        image: service_influxdb
+        image: influxdb_alpine
         ports:
         - containerPort: 8086
         imagePullPolicy: Never
@@ -55,4 +58,4 @@ spec:
       volumes:
       - name: influxdb
         persistentVolumeClaim:
-          claimName: influxdb
+          claimName: influxdb-pvc # maybe change to influxdb-pvc

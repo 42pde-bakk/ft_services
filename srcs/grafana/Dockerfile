@@ -11,6 +11,7 @@ RUN wget https://dl.grafana.com/oss/release/grafana-6.7.2.linux-amd64.tar.gz \
 
 # Copying all data:
 # Users, dashboards, data sources...
+RUN mkdir -p grafana-6.7.2/data
 COPY ./grafana.db ./grafana-6.7.2/data
 COPY start.sh /start.sh
 

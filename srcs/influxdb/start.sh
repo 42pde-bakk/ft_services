@@ -2,4 +2,4 @@
 
 # Launching telegraf and InfluxDB
 telegraf &
-influxdb run -config /etc/influxdb.conf
+influxd run -config /etc/influxdb.conf
