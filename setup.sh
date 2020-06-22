@@ -1,3 +1,4 @@
+# This is before the new subject change
 # rm -rf ~/.minikube
 # mkdir -p ~/goinfre/minikube
 # ln -s ~/goinfre/minikube ~/.minikube
