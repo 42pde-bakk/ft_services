@@ -17,7 +17,7 @@ spec:
       containers:
         - name: nginx
           image: nginx_alpine
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           resources:
               requests:
                 memory: "64Mi"
@@ -42,7 +42,7 @@ metadata:
 spec:
   selector:
     app: nginx
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 80

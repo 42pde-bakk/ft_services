@@ -5,7 +5,7 @@ metadata:
   labels:
     app: ftps
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: ftps
   ports:
