@@ -5,10 +5,10 @@ metadata:
   labels:
     app: grafana
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - port: 3000
-    nodePort: 3000
+    # nodePort: 3000
     protocol: TCP
     name: http
   selector:
@@ -32,6 +32,7 @@ spec:
       labels:
         app: grafana
     spec:
+      hostNetwork: true
       containers:
       - name: grafana
         image: grafana_alpine

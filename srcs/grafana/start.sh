@@ -1,5 +1,5 @@
-#!/bin/bash
+#!/bin/sh
 
-# Let's run Telegraf and the Grafana web dashboard
+# We run Telegraf and the Grafana web dashboard
 telegraf &
 cd ./grafana-6.7.2/bin/ && ./grafana-server

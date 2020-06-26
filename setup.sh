@@ -5,40 +5,41 @@
 minikube delete
 
 minikube start --vm-driver=virtualbox \
---cpus=4 --memory 8192
+--cpus=2 --memory 3000
 # --bootstrapper=kubeadm \
 # --extra-config=kubelet.authentication-token-webhook=true
 
-# make sure to not enable the ingress addon if you are working with MetalLB
+# make sure to not to do "minikube addons enable ingress" if you are working with MetalLB
 minikube addons enable dashboard
-
+sleep 1
 echo "Eval..."
-eval $(minikube docker-env)
+eval $(minikube docker-env) # eval $(minikube -p minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)
 printf "Minikube IP: ${MINIKUBE_IP}\n"
 
 sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html > srcs/nginx/homepage-pde-bakk/index.html
-sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/wordpress/tmpwpconfig.php > srcs/wordpress/wp-config.php
+
+# Create temp files and use sed on my used files
+# sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/mysql/wordpress.sql > srcs/mysql/wordpress-tmp.sql
+sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/wordpress/wp-config.php > srcs/wordpress/wp-config-tmp.php
+
+
 echo "Building images..."
-docker build -t nginx_alpine ./srcs/nginx/
-docker build -t influxdb_alpine ./srcs/influxdb
-docker build -t ftps_alpine --build-arg IP=${IP} ./srcs/ftps/
-docker build -t grafana_alpine ./srcs/grafana
-docker build -t wordpress_alpine ./srcs/wordpress
+docker build -t nginx_alpine ./srcs/nginx/ > .nginxbuild.txt 2>&1
+docker build -t ftps_alpine ./srcs/ftps/ --build-arg IP=${IP} > .ftpsbuild.txt 2>&1
+docker build -t mysql_alpine ./srcs/mysql > .mysqlbuild.txt 2>&1
+docker build -t wordpress_alpine ./srcs/wordpress> .wordpressbuild.txt 2>&1
+docker build -t phpmyadmin_alpine ./srcs/phpmyadmin > .phpmyadminbuild.txt 2>&1
+docker build -t influxdb_alpine ./srcs/influxdb > .influxdbbuild.txt 2>&1
+docker build -t grafana_alpine ./srcs/grafana > .grafanabuild.txt 2>&1
 
 sleep 5
 kubectl apply -k ./srcs/
 sleep 1
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-# sleep 1
-# kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
-# ./apply.sh
 
-# echo "\n\nHier: http://$MINIKUBE_IP"
 printf "Opening http://$MINIKUBE_IP in your browser...\n"
-open http://$MINIKUBE_IP # this wont work, you need the correct port:
-minikube service nginx --url
-# minikube dashboard
+open http://$MINIKUBE_IP
 
 # To enter terminal:
-# kubectl run -i --tty busybox --image=busybox --restart=Never -- sh 
+# kubectl run -i --tty busybox --image=busybox --restart=Never -- sh

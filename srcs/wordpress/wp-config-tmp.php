@@ -24,16 +24,16 @@ foreach ($vars as $var) {
 define( 'DB_NAME', 'wordpress' );
 
 /** MySQL database username */
-define( 'DB_USER', 'user' );
+define( 'DB_USER', 'root' );
 
 /** MySQL database password */
 define( 'DB_PASSWORD', 'password' );
 
 /** MySQL hostname */
-define( 'DB_HOST', 'mysql-service' );
+define( 'DB_HOST', 'wordpress-mysql' );
 
-define('WP_HOME', 'http://MINIKUBE_IP:5050' );
-define('WP_SITEURL', 'http://MINIKUBE_IP:5050' );
+define('WP_HOME', 'http://192.168.99.254:5050' );
+define('WP_SITEURL', 'http://192.168.99.254:5050' );
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
@@ -41,7 +41,7 @@ define( 'DB_CHARSET', 'utf8' );
 /** The Database Collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
 
-define('AUTHOR', 'Peer');
+define('AUTHOR', 'Feskir');
 
 /**#@+
  * Authentication Unique Keys and Salts.

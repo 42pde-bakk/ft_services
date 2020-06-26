@@ -11,11 +11,11 @@ spec:
   ports:
   - port: 21
     targetPort: 21
-    nodePort: 21
+    #nodePort: 21
     name: ftps
   - port: 21000
     targetPort: 21000
-    nodePort: 21000
+    #nodePort: 21
     name: ftps-data
 
 ---
@@ -36,6 +36,7 @@ spec:
       labels:
         app: ftps
     spec:
+      hostNetwork: true
       containers:
       - name: ftps
         image: ftps_alpine

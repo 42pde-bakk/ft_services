@@ -10,7 +10,8 @@ spec:
   type: ClusterIP
   ports:
   - port: 8086
-    nodePort: 8086
+    #nodePort: 8086
+    targetPort: 8086
     protocol: TCP
     name: http
   selector:
@@ -46,6 +47,7 @@ spec:
       labels:
         app: influxdb
     spec:
+      hostNetwork: true
       containers:
       - name: influxdb
         image: influxdb_alpine

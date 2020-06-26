@@ -14,6 +14,7 @@ spec:
       labels:
         app: nginx
     spec:
+      hostNetwork: true # To make Nginx also available on port 80
       containers:
         - name: nginx
           image: nginx_alpine

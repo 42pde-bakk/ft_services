@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-pma
+  labels:
+    app: deployment-pma
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin
+  labels:
+    app: phpmyadmin
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 5000
+    # nodePort: 5000
+    protocol: TCP
+    name: http
+  selector:
+    app: phpmyadmin
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin
+  labels:
+    app: phpmyadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phpmyadmin
+  template:
+    metadata:
+      labels:
+        app: phpmyadmin
+    spec:
+      hostNetwork: true # To make PhpMyadmin also available on port 5000
+      containers:
+      - name: phpmyadmin
+        image: phpmyadmin_alpine
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+        env:
+          - name: PMA_HOST
+            value: mysql
+          - name: PMA_PORT
+            value: "3306"
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
+        volumeMounts:
+        - name: pstore-pma
+          mountPath: /var/www/html
+      volumes:
+      - name: pstore-pma
+        persistentVolumeClaim:
+          claimName: pvc-pma
