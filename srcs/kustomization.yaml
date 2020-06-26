@@ -3,7 +3,7 @@ kind: Kustomization
 secretGenerator:
 - name: mysql-pass
   literals:
-    - password=pass
+  - password=fluffclub
 resources:
 - metallb.yaml
 - configmap.yaml

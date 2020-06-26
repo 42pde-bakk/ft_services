@@ -1,0 +1,29 @@
+Sending build context to Docker daemon  2.048kB
+Step 1/5 : FROM alpine
+ ---> a24bb4013296
+Step 2/5 : MAINTAINER Peer de Bakker <pde-bakk@student.codam.nl>
+ ---> Using cache
+ ---> 8ef93962ded0
+Step 3/5 : RUN apk update && apk add influxdb
+ ---> Running in ab3351f02309
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/community/x86_64/APKINDEX.tar.gz
+v3.12.0-94-g0ddce5a52e [http://dl-cdn.alpinelinux.org/alpine/v3.12/main]
+v3.12.0-96-g45f0d495cc [http://dl-cdn.alpinelinux.org/alpine/v3.12/community]
+OK: 12736 distinct packages available
+(1/1) Installing influxdb (1.8.0-r1)
+Executing influxdb-1.8.0-r1.pre-install
+Executing busybox-1.31.1-r16.trigger
+OK: 268 MiB in 15 packages
+Removing intermediate container ab3351f02309
+ ---> cbd834f97f10
+Step 4/5 : EXPOSE 8806
+ ---> Running in a4ea297a3a4d
+Removing intermediate container a4ea297a3a4d
+ ---> f5e854527380
+Step 5/5 : CMD influxd run
+ ---> Running in 06d5b7661d2e
+Removing intermediate container 06d5b7661d2e
+ ---> 50f5ce668bad
+Successfully built 50f5ce668bad
+Successfully tagged influxdb_alpine:latest

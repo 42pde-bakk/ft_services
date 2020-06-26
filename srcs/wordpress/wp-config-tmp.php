@@ -32,8 +32,8 @@ define( 'DB_PASSWORD', 'password' );
 /** MySQL hostname */
 define( 'DB_HOST', 'wordpress-mysql' );
 
-define('WP_HOME', 'http://192.168.99.254:5050' );
-define('WP_SITEURL', 'http://192.168.99.254:5050' );
+define('WP_HOME', 'http://192.168.99.252:5050' );
+define('WP_SITEURL', 'http://192.168.99.252:5050' );
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
@@ -88,9 +88,9 @@ define( 'WP_DEBUG', false );
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
-if ( ! defined( 'ABSPATH' ) ) {
-	define( 'ABSPATH', dirname( __FILE__ ) . '/' );
-}
+// if ( ! defined( 'ABSPATH' ) ) {
+// 	define( 'ABSPATH', dirname( __FILE__ ) . '/' );
+// }
 
-/** Sets up WordPress vars and included files. */
-require_once( ABSPATH . 'wp-settings.php' );
+// /** Sets up WordPress vars and included files. */
+// require_once( ABSPATH . 'wp-settings.php' );

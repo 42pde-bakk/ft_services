@@ -1,0 +1,56 @@
+Sending build context to Docker daemon   7.68kB
+Step 1/10 : FROM alpine:latest
+ ---> a24bb4013296
+Step 2/10 : MAINTAINER WangXian <xian366@126.com>
+ ---> Running in 48c06ae268d0
+Removing intermediate container 48c06ae268d0
+ ---> b429791e5873
+Step 3/10 : WORKDIR /app
+ ---> Running in 979494b00de5
+Removing intermediate container 979494b00de5
+ ---> 30772f720a7c
+Step 4/10 : VOLUME /app
+ ---> Running in a6dfcbfd74f8
+Removing intermediate container a6dfcbfd74f8
+ ---> 3019080ea735
+Step 5/10 : COPY startup.sh /startup.sh
+ ---> 350c4ac938d5
+Step 6/10 : RUN	chmod +x /startup.sh
+ ---> Running in ce79f2247c0f
+Removing intermediate container ce79f2247c0f
+ ---> e3c1500959e2
+Step 7/10 : RUN apk add --update mysql mysql-client && rm -f /var/cache/apk/*
+ ---> Running in d4574ca939d9
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/community/x86_64/APKINDEX.tar.gz
+(1/14) Installing mariadb-common (10.4.13-r0)
+(2/14) Installing libaio (0.3.112-r1)
+(3/14) Installing xz-libs (5.2.5-r0)
+(4/14) Installing ncurses-terminfo-base (6.2_p20200523-r0)
+(5/14) Installing ncurses-libs (6.2_p20200523-r0)
+(6/14) Installing linux-pam (1.3.1-r4)
+(7/14) Installing pcre (8.44-r0)
+(8/14) Installing libgcc (9.3.0-r2)
+(9/14) Installing libstdc++ (9.3.0-r2)
+(10/14) Installing libxml2 (2.9.10-r4)
+(11/14) Installing mariadb (10.4.13-r0)
+Executing mariadb-10.4.13-r0.pre-install
+(12/14) Installing mysql (10.4.13-r0)
+(13/14) Installing mariadb-client (10.4.13-r0)
+(14/14) Installing mysql-client (10.4.13-r0)
+Executing busybox-1.31.1-r16.trigger
+OK: 166 MiB in 28 packages
+Removing intermediate container d4574ca939d9
+ ---> 1ba2336efbd5
+Step 8/10 : COPY my.cnf /etc/mysql/my.cnf
+ ---> e755ca34ebda
+Step 9/10 : EXPOSE 3306
+ ---> Running in 3282e6a9bf15
+Removing intermediate container 3282e6a9bf15
+ ---> b2ed0947e2bd
+Step 10/10 : CMD ["/startup.sh"]
+ ---> Running in 08a41a3d0c3a
+Removing intermediate container 08a41a3d0c3a
+ ---> 9400ad463474
+Successfully built 9400ad463474
+Successfully tagged mysql_alpine:latest
