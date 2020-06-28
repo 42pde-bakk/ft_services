@@ -1,3 +1,10 @@
+red=$'\e[1;31m'
+grn=$'\e[1;32m'
+yel=$'\e[1;33m'
+blu=$'\e[1;34m'
+mag=$'\e[1;35m'
+cyn=$'\e[1;36m'
+end=$'\e[0m'
 # rm -rf ~/.minikube
 # mkdir -p ~/goinfre/minikube
 # ln -s ~/goinfre/minikube ~/.minikube
@@ -21,19 +28,26 @@ sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html >
 
 # Create temp files and use sed on my used files
 # sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/mysql/wordpress.sql > srcs/mysql/wordpress-tmp.sql
-sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/wordpress/wp-config.php > srcs/wordpress/wp-config-tmp.php
+sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/wordpress/wpsetup.sh > srcs/wordpress/tmp.sh
 
 
 echo "Building images..."
-docker build -t nginx_alpine ./srcs/nginx/ > .nginxbuild.txt 2>&1
-docker build -t ftps_alpine ./srcs/ftps/ --build-arg IP=${IP} > .ftpsbuild.txt 2>&1
-docker build -t mysql_alpine ./srcs/mysql > .mysqlbuild.txt 2>&1
-docker build -t wordpress_alpine ./srcs/wordpress> .wordpressbuild.txt 2>&1
-docker build -t phpmyadmin_alpine ./srcs/phpmyadmin > .phpmyadminbuild.txt 2>&1
-docker build -t influxdb_alpine ./srcs/influxdb > .influxdbbuild.txt 2>&1
-docker build -t grafana_alpine ./srcs/grafana > .grafanabuild.txt 2>&1
+printf "Building nginx image:\t\t"
+docker build -t nginx_alpine ./srcs/nginx/ > .nginxbuild.txt 2>&1 && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"
+printf "Building ftps image:\t\t"
+docker build -t ftps_alpine ./srcs/ftps2 --build-arg IP=${IP} > .ftpsbuild.txt 2>&1 && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"
+printf "Building mysql image:\t\t"
+docker build -t mysql_alpine ./srcs/mysql > .mysqlbuild.txt 2>&1 && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"
+printf "Building wordpress image:\t"
+docker build -t wordpress_alpine ./srcs/wordpress > .wordpressbuild.txt 2>&1 && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"
+printf "Building phpmyadmin image:\t"
+docker build -t phpmyadmin_alpine ./srcs/phpmyadmin > .phpmyadminbuild.txt 2>&1 && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"
+printf "Building influxdb image:\t"
+docker build -t influxdb_alpine ./srcs/influxdb2 > .influxdbbuild.txt 2>&1 && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"
+printf "Building grafana image:\t\t"
+docker build -t grafana_alpine ./srcs/grafana2 > .grafanabuild.txt 2>&1 && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"
 
-sleep 5
+sleep 3
 kubectl apply -k ./srcs/
 sleep 1
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
@@ -42,4 +56,4 @@ printf "Opening http://$MINIKUBE_IP in your browser...\n"
 open http://$MINIKUBE_IP
 
 # To enter terminal:
-# kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
+# kubectl exec -it <podname> sh

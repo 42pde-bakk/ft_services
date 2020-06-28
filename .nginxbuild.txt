@@ -9,15 +9,15 @@ Digest: sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321
 Status: Downloaded newer image for alpine:latest
  ---> a24bb4013296
 Step 2/11 : MAINTAINER Peer de Bakker <pde-bakk@student.codam.nl>
- ---> Running in 0afac8bc9a8d
-Removing intermediate container 0afac8bc9a8d
- ---> 8ef93962ded0
+ ---> Running in 72190806da16
+Removing intermediate container 72190806da16
+ ---> 3e9f8d1cb7a2
 Step 3/11 : RUN apk update && 	apk add nginx && 	apk add openssl && 	apk add openssh
- ---> Running in 0af839c5faad
+ ---> Running in 977fbf671f5b
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/main/x86_64/APKINDEX.tar.gz
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/community/x86_64/APKINDEX.tar.gz
 v3.12.0-94-g0ddce5a52e [http://dl-cdn.alpinelinux.org/alpine/v3.12/main]
-v3.12.0-96-g45f0d495cc [http://dl-cdn.alpinelinux.org/alpine/v3.12/community]
+v3.12.0-98-gab2b9ec94d [http://dl-cdn.alpinelinux.org/alpine/v3.12/community]
 OK: 12736 distinct packages available
 (1/2) Installing pcre (8.44-r0)
 (2/2) Installing nginx (1.18.0-r0)
@@ -38,41 +38,41 @@ OK: 8 MiB in 17 packages
 (9/9) Installing openssh (8.3_p1-r0)
 Executing busybox-1.31.1-r16.trigger
 OK: 14 MiB in 26 packages
-Removing intermediate container 0af839c5faad
- ---> aa798e42b0ca
+Removing intermediate container 977fbf671f5b
+ ---> dde2335721da
 Step 4/11 : RUN adduser -D -g 'www' www && 	mkdir /www && 	chown -R www:www /var/lib/nginx && 	chown -R www:www /www && 	mkdir -p /run/nginx
- ---> Running in 006737fb06ca
-Removing intermediate container 006737fb06ca
- ---> 48d3268fe572
+ ---> Running in 9dd74bcafdb6
+Removing intermediate container 9dd74bcafdb6
+ ---> 2ec81357672f
 Step 5/11 : RUN	adduser -D user
- ---> Running in 0ee5b110ebbc
-Removing intermediate container 0ee5b110ebbc
- ---> 5a61f55f1940
+ ---> Running in 7bf32f1c6730
+Removing intermediate container 7bf32f1c6730
+ ---> e4019c10eca6
 Step 6/11 : RUN	echo "user:password"|chpasswd
- ---> Running in 5fb93ce754b2
+ ---> Running in ee7a36d56689
 [91mchpasswd: password for 'user' changed
-[0mRemoving intermediate container 5fb93ce754b2
- ---> f27110d96e78
+[0mRemoving intermediate container ee7a36d56689
+ ---> 8cb6ba75ef39
 Step 7/11 : RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/C=NL/ST=Noord-Holland/O=Codam/CN=ft_services'  -keyout /etc/ssl/localhost.key -out /etc/ssl/localhost.crt
- ---> Running in cfc1486b97d4
+ ---> Running in b0ecccb81a9b
 [91mGenerating a RSA private key
-....[0m[91m.[0m[91m.[0m[91m....[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m..[0m[91m.[0m[91m.[0m[91m.[0m[91m..[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m+[0m[91m+[0m[91m+[0m[91m+[0m[91m+
-[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m+[0m[91m+[0m[91m+[0m[91m+[0m[91m+
+[0m[91m.[0m[91m.[0m[91m.[0m[91m.......[0m[91m.[0m[91m.[0m[91m...[0m[91m.[0m[91m..[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m...[0m[91m....[0m[91m...[0m[91m................[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m...[0m[91m..[0m[91m.[0m[91m.[0m[91m+[0m[91m+[0m[91m+[0m[91m+[0m[91m+
+[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m..[0m[91m.[0m[91m.[0m[91m......[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m.[0m[91m+++[0m[91m+[0m[91m+
 [0m[91mwriting new private key to '/etc/ssl/localhost.key'
 [0m[91m-----
-[0mRemoving intermediate container cfc1486b97d4
- ---> 0c39c346ebe0
+[0mRemoving intermediate container b0ecccb81a9b
+ ---> 8df2844ef2d0
 Step 8/11 : COPY nginx.conf /etc/nginx/
- ---> 702ae44e176f
+ ---> ff147e31c60b
 Step 9/11 : COPY homepage-pde-bakk/ /www/.
- ---> 249f9ec52b28
+ ---> 53ca758742dd
 Step 10/11 : EXPOSE 80 443 22
- ---> Running in ec1579f18627
-Removing intermediate container ec1579f18627
- ---> 20f62e0c5221
+ ---> Running in 1cbe48b2cb16
+Removing intermediate container 1cbe48b2cb16
+ ---> a82e6e32d4b7
 Step 11/11 : CMD ["nginx", "-g", "daemon off;"]
- ---> Running in e1b22b858bf8
-Removing intermediate container e1b22b858bf8
- ---> e6df565d2d3c
-Successfully built e6df565d2d3c
+ ---> Running in 1dcf6db98b67
+Removing intermediate container 1dcf6db98b67
+ ---> 311826de93f8
+Successfully built 311826de93f8
 Successfully tagged nginx_alpine:latest

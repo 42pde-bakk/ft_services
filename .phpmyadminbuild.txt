@@ -2,11 +2,11 @@ Sending build context to Docker daemon  241.2kB
 Step 1/8 : FROM alpine:latest
  ---> a24bb4013296
 Step 2/8 : RUN apk update     && apk add php7 php7-fpm php7-opcache php7-gd php7-mysqli php7-zlib php7-curl php7-mbstring php7-json php7-session php7-zip     && mkdir www
- ---> Running in d1f180052cbc
+ ---> Running in dc3299455536
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/main/x86_64/APKINDEX.tar.gz
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/community/x86_64/APKINDEX.tar.gz
 v3.12.0-94-g0ddce5a52e [http://dl-cdn.alpinelinux.org/alpine/v3.12/main]
-v3.12.0-96-g45f0d495cc [http://dl-cdn.alpinelinux.org/alpine/v3.12/community]
+v3.12.0-98-gab2b9ec94d [http://dl-cdn.alpinelinux.org/alpine/v3.12/community]
 OK: 12736 distinct packages available
 (1/41) Installing php7-common (7.3.19-r0)
 (2/41) Installing argon2-libs (20190702-r1)
@@ -52,14 +52,14 @@ OK: 12736 distinct packages available
 Executing busybox-1.31.1-r16.trigger
 Executing ca-certificates-20191127-r4.trigger
 OK: 30 MiB in 55 packages
-Removing intermediate container d1f180052cbc
- ---> 3e93992e96d8
+Removing intermediate container dc3299455536
+ ---> b7e37ae4cca6
 Step 3/8 : RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.1/phpMyAdmin-5.0.1-english.tar.gz 	&& tar -xzvf phpMyAdmin-5.0.1-english.tar.gz --strip-components=1 -C /www 	&& mkdir /www/tmp 	&& chmod 777 /www/tmp
- ---> Running in 967e994bac71
+ ---> Running in 4b8a0ac9a8ba
 [91mConnecting to files.phpmyadmin.net (185.59.222.22:443)
 [0m[91msaving to 'phpMyAdmin-5.0.1-english.tar.gz'
-[0m[91mphpMyAdmin-5.0.1-eng [0m[91m100% [0m[91m|********************************| [0m[91m7967k  0:00:00 ETA
-[0m[91m'phpMyAdmin-5.0.1-english.tar.gz' saved
+[0m[91mphpMyAdmin-5.0.1-eng 100% |********************************| 7967k  0:00:00 ETA
+'phpMyAdmin-5.0.1-english.tar.gz' saved
 [0mphpMyAdmin-5.0.1-english/
 phpMyAdmin-5.0.1-english/CODE_OF_CONDUCT.md
 phpMyAdmin-5.0.1-english/CONTRIBUTING.md
@@ -3887,23 +3887,23 @@ phpMyAdmin-5.0.1-english/version_check.php
 phpMyAdmin-5.0.1-english/view_create.php
 phpMyAdmin-5.0.1-english/view_operations.php
 phpMyAdmin-5.0.1-english/yarn.lock
-Removing intermediate container 967e994bac71
- ---> 64c2adea82fa
+Removing intermediate container 4b8a0ac9a8ba
+ ---> 092d02edade4
 Step 4/8 : COPY config.inc.php /www
- ---> a994d48c2d93
+ ---> 255ebed1c9c2
 Step 5/8 : COPY setup.sh .
- ---> f5ff4239828b
+ ---> 651c465ad637
 Step 6/8 : RUN chmod +x setup.sh
- ---> Running in 00a79eafeee8
-Removing intermediate container 00a79eafeee8
- ---> 643d63653d97
+ ---> Running in 9c63a517905d
+Removing intermediate container 9c63a517905d
+ ---> 65ccc3eb8f8f
 Step 7/8 : EXPOSE 5000
- ---> Running in 5f17d6093399
-Removing intermediate container 5f17d6093399
- ---> 9a6293033670
+ ---> Running in 10c8facc1573
+Removing intermediate container 10c8facc1573
+ ---> 3b0ac3c02109
 Step 8/8 : CMD ./setup.sh
- ---> Running in 7173986f96dc
-Removing intermediate container 7173986f96dc
- ---> e36c88a1648f
-Successfully built e36c88a1648f
+ ---> Running in 1e8ccc57c396
+Removing intermediate container 1e8ccc57c396
+ ---> d6109e1c3b65
+Successfully built d6109e1c3b65
 Successfully tagged phpmyadmin_alpine:latest

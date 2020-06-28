@@ -5,12 +5,13 @@ metadata:
   labels:
     app: wordpress
 spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
   selector:
     app: wordpress
     tier: mysql
-  clusterIP: None
-  ports:
-    - port: 3306
+  # clusterIP: None
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -23,7 +24,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
+      storage: 20Gi
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
@@ -58,7 +59,7 @@ spec:
         - name: MYSQL_USER_DB
           value: wordpress
         - name: MYSQL_USER
-          value: bpeeters
+          value: peer
         - name: MYSQL_USER_PWD
           valueFrom:
             secretKeyRef:

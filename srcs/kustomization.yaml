@@ -3,14 +3,14 @@ kind: Kustomization
 secretGenerator:
 - name: mysql-pass
   literals:
-  - password=fluffclub
+  - password=pass
 resources:
 - metallb.yaml
 - configmap.yaml
 - nginx.yaml
-- influxdb.yaml
-- ftps.yaml
-- grafana.yaml
 - mysql.yaml
-- phpmyadmin.yaml
 - wordpress.yaml
+- phpmyadmin.yaml
+# - ftps.yaml
+# - influxdb.yaml
+# - grafana.yaml

@@ -24,13 +24,13 @@ foreach ($vars as $var) {
 define( 'DB_NAME', 'wordpress' );
 
 /** MySQL database username */
-define( 'DB_USER', 'root' );
+define( 'DB_USER', 'mysql' );
 
 /** MySQL database password */
-define( 'DB_PASSWORD', 'password' );
+define( 'DB_PASSWORD', 'pass' );
 
 /** MySQL hostname */
-define( 'DB_HOST', 'wordpress-mysql' );
+define( 'DB_HOST', 'mysql' );
 
 define('WP_HOME', 'http://MINIKUBE_IP:5050' );
 define('WP_SITEURL', 'http://MINIKUBE_IP:5050' );
