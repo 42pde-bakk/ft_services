@@ -1,73 +1,67 @@
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
   name: mysql
   labels:
-    app: wordpress
+    app: mysql
 spec:
   type: ClusterIP
-  ports:
-    - port: 3306
+  # ClusterIP: none
   selector:
-    app: wordpress
-    tier: mysql
-  # clusterIP: None
+    app: mysql
+  ports:
+  - name: mysql
+    port: 3306
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
   labels:
-    app: wordpress
+    app: mysql
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 20Gi
+      storage: 2Gi
 ---
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+type: Opaque
+data:
+  username: YWRtaW4=
+  password: YWRtaW4=
+---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
   labels:
-    app: wordpress
+    app: mysql
 spec:
-  selector:
-    matchLabels:
-      app: wordpress
-      tier: mysql
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      app: mysql
   template:
     metadata:
       labels:
-        app: wordpress
-        tier: mysql
+        app: mysql
     spec:
-      hostNetwork: true
       containers:
-      - image: mysql_alpine
-        name: mysql
-        imagePullPolicy: Never
+      - name: mysql
+        image: mysql:5.6 # mysql_alpine
+        # imagePullPolicy: Never
         env:
-        - name: MYSQL_ROOT_PWD
+        - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-pass
+              name: mysql-secret
               key: password
-        - name: MYSQL_USER_DB
-          value: wordpress
-        - name: MYSQL_USER
-          value: peer
-        - name: MYSQL_USER_PWD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-pass
-              key: password
-        ports:
-        - containerPort: 3306
-          name: mysql
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql

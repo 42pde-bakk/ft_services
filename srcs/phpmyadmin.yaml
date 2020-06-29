@@ -14,11 +14,14 @@ spec:
       labels:
         app: phpmyadmin
     spec:
-      hostNetwork: true
-      containers: 
+      containers:
         - name: phpmyadmin
           image: phpmyadmin_alpine
           imagePullPolicy: Never
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "200m"
           ports:
             - containerPort: 5000
           env:
@@ -31,9 +34,7 @@ spec:
                 secretKeyRef:
                   name: mysql-pass
                   key: password
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:

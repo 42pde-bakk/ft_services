@@ -16,24 +16,20 @@ minikube start --vm-driver=virtualbox \
 # --bootstrapper=kubeadm \
 # --extra-config=kubelet.authentication-token-webhook=true
 
+minikube addons enable metallb
 # make sure to not to do "minikube addons enable ingress" if you are working with MetalLB
-minikube addons enable dashboard
-sleep 1
+# minikube addons enable dashboard
 echo "Eval..."
 eval $(minikube docker-env) # eval $(minikube -p minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)
 printf "Minikube IP: ${MINIKUBE_IP}\n"
 
 sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html > srcs/nginx/homepage-pde-bakk/index.html
-
-# Create temp files and use sed on my used files
-# sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/mysql/wordpress.sql > srcs/mysql/wordpress-tmp.sql
-sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/wordpress/wpsetup.sh > srcs/wordpress/tmp.sh
-
+sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/wordpress/tmp.sh > srcs/wordpress/setup.sh
 
 echo "Building images..."
 printf "Building nginx image:\t\t"
-docker build -t nginx_alpine ./srcs/nginx/ > .nginxbuild.txt 2>&1 && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"
+docker build -t nginx_alpine ./srcs/nginx > .nginxbuild.txt 2>&1 && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"
 printf "Building ftps image:\t\t"
 docker build -t ftps_alpine ./srcs/ftps2 --build-arg IP=${IP} > .ftpsbuild.txt 2>&1 && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"
 printf "Building mysql image:\t\t"
@@ -50,7 +46,7 @@ docker build -t grafana_alpine ./srcs/grafana2 > .grafanabuild.txt 2>&1 && print
 sleep 3
 kubectl apply -k ./srcs/
 sleep 1
-kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+# kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
 printf "Opening http://$MINIKUBE_IP in your browser...\n"
 open http://$MINIKUBE_IP

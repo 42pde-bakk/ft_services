@@ -6,7 +6,6 @@ RUN apk update \
 RUN addgroup mysql mysql
 
 COPY setup.sh .
-RUN chmod +x setup.sh
 COPY my.cnf /etc/mysql/my.cnf
 
 VOLUME [ "/var/lib/mysql" ]

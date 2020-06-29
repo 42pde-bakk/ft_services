@@ -14,11 +14,11 @@ do
     sleep 10
 done
 echo "Connection with Mysql established."
-wp config create --allow-root --dbname=wordpress --dbuser=peer --dbpass=pass --dbhost=mysql --dbcharset=utf8mb4 --extra-php <<PHP
-define('WP_HOME', 'http://MINIKUBE_IP:5050' );
-define('WP_SITEURL', 'http://MINIKUBE_IP:5050' );
+wp config create --allow-root --dbname=wordpress --dbuser=bpeeters --dbpass=fluffclub --dbhost=mysql --dbcharset=utf8mb4 --extra-php <<PHP
+define('WP_HOME', 'http://192.168.99.253:5050' );
+define('WP_SITEURL', 'http://192.168.99.253:5050' );
 PHP
-wp core install --allow-root --url=http://MINIKUBE_IP:5050 --path=/www --title="ft_services" --admin_user=peer --admin_password=pass --admin_email=pde-bakk@student.codam.nl --skip-email
+wp core install --allow-root --url=http://192.168.99.253:5050 --path=/www --title="ft_services" --admin_user=bpeeters --admin_password=fluffclub --admin_email=bpeeters@student.codam.nl --skip-email
 wp user create --allow-root editor editor@example.com --role=editor --user_pass=editor
 wp user create --allow-root author author@example.com --role=author --user_pass=author
 wp user create --allow-root contributor contributor@example.com --role=contributor --user_pass=contributor

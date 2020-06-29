@@ -5,7 +5,8 @@ MAINTAINER Peer de Bakker <pde-bakk@student.codam.nl>
 RUN apk update && \
 	apk add nginx && \
 	apk add openssl && \
-	apk add openssh
+	apk add openssh && \
+	apk add tar
 
 RUN adduser -D -g 'www' www && \
 	mkdir /www && \

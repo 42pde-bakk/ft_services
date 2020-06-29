@@ -44,7 +44,7 @@ RUN adduser -D -g 'www' www \
 	&& chown -R www:www /var/lib/nginx \
 	&& chown -R www:www /www
 
-COPY tmp.sh ./setup.sh
+COPY setup.sh .
 RUN chmod +x setup.sh
 
 RUN sed -i "s|;listen.owner\s*=\s*nobody|listen.owner = ${PHP_FPM_USER}|g" /etc/php7/php-fpm.d/www.conf ;\

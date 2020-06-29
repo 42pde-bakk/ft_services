@@ -17,7 +17,6 @@ else
 	echo "[i] MySQL data directory not found, creating initial DBs"
 
 	chown -R mysql:mysql /var/lib/mysql
-	chown mysql:mysql /var/lib/*
 
 	# init database
 	echo 'Initializing database'
@@ -70,7 +69,7 @@ EOF
 	# run sql in tempfile
 	echo "[i] run tempfile: $tfile"
 	/usr/bin/mysqld --user=mysql --datadir=/var/lib/mysql --bootstrap --verbose=0 < $tfile
-	# rm -f $tfile
+	rm -f $tfile
 fi
 
 echo "[i] Sleeping 5 sec"
