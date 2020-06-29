@@ -1,0 +1,105 @@
+Sending build context to Docker daemon  3.584kB
+Step 1/1 : FROM wordpress
+latest: Pulling from library/wordpress
+8559a31e96f4: Pulling fs layer
+e0276193a084: Pulling fs layer
+eb2d00c10344: Pulling fs layer
+f54006e0dc29: Pulling fs layer
+e0d3d1244592: Pulling fs layer
+3a60f364b0c5: Pulling fs layer
+3e309988c00b: Pulling fs layer
+42c09ef39fe7: Pulling fs layer
+8faf60068506: Pulling fs layer
+c59965a5777f: Pulling fs layer
+db37570cfdf4: Pulling fs layer
+2c289722ebb3: Pulling fs layer
+491a234e2c26: Pulling fs layer
+944a23d0ea39: Pulling fs layer
+b83f4c8507f7: Pulling fs layer
+e80a84c5a269: Pulling fs layer
+267943a2fe25: Pulling fs layer
+a7780c30584c: Pulling fs layer
+ed59c3cd6acc: Pulling fs layer
+a650de05eb1e: Pulling fs layer
+f54006e0dc29: Waiting
+e0d3d1244592: Waiting
+3a60f364b0c5: Waiting
+42c09ef39fe7: Waiting
+8faf60068506: Waiting
+c59965a5777f: Waiting
+db37570cfdf4: Waiting
+2c289722ebb3: Waiting
+491a234e2c26: Waiting
+944a23d0ea39: Waiting
+b83f4c8507f7: Waiting
+e80a84c5a269: Waiting
+267943a2fe25: Waiting
+a7780c30584c: Waiting
+ed59c3cd6acc: Waiting
+a650de05eb1e: Waiting
+3e309988c00b: Waiting
+e0276193a084: Verifying Checksum
+e0276193a084: Download complete
+f54006e0dc29: Verifying Checksum
+f54006e0dc29: Download complete
+8559a31e96f4: Verifying Checksum
+8559a31e96f4: Download complete
+3a60f364b0c5: Verifying Checksum
+3a60f364b0c5: Download complete
+eb2d00c10344: Verifying Checksum
+eb2d00c10344: Download complete
+e0d3d1244592: Verifying Checksum
+e0d3d1244592: Download complete
+3e309988c00b: Verifying Checksum
+3e309988c00b: Download complete
+8faf60068506: Verifying Checksum
+8faf60068506: Download complete
+42c09ef39fe7: Verifying Checksum
+42c09ef39fe7: Download complete
+db37570cfdf4: Verifying Checksum
+db37570cfdf4: Download complete
+c59965a5777f: Verifying Checksum
+c59965a5777f: Download complete
+2c289722ebb3: Verifying Checksum
+2c289722ebb3: Download complete
+491a234e2c26: Verifying Checksum
+491a234e2c26: Download complete
+8559a31e96f4: Pull complete
+944a23d0ea39: Verifying Checksum
+944a23d0ea39: Download complete
+e0276193a084: Pull complete
+e80a84c5a269: Verifying Checksum
+e80a84c5a269: Download complete
+b83f4c8507f7: Verifying Checksum
+b83f4c8507f7: Download complete
+267943a2fe25: Verifying Checksum
+267943a2fe25: Download complete
+a7780c30584c: Verifying Checksum
+a7780c30584c: Download complete
+a650de05eb1e: Verifying Checksum
+a650de05eb1e: Download complete
+ed59c3cd6acc: Verifying Checksum
+ed59c3cd6acc: Download complete
+eb2d00c10344: Pull complete
+f54006e0dc29: Pull complete
+e0d3d1244592: Pull complete
+3a60f364b0c5: Pull complete
+3e309988c00b: Pull complete
+42c09ef39fe7: Pull complete
+8faf60068506: Pull complete
+c59965a5777f: Pull complete
+db37570cfdf4: Pull complete
+2c289722ebb3: Pull complete
+491a234e2c26: Pull complete
+944a23d0ea39: Pull complete
+b83f4c8507f7: Pull complete
+e80a84c5a269: Pull complete
+267943a2fe25: Pull complete
+a7780c30584c: Pull complete
+ed59c3cd6acc: Pull complete
+a650de05eb1e: Pull complete
+Digest: sha256:ca4e9b3078ce3497cfbadea6df299a6c46fceddc7eac04958207ef3e4d2edaa8
+Status: Downloaded newer image for wordpress:latest
+ ---> a5fef19f5a86
+Successfully built a5fef19f5a86
+Successfully tagged wordpress_alpine:latest

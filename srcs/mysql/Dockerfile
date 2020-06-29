@@ -1,14 +1,11 @@
-FROM alpine:latest
+FROM		alpine
 
-RUN apk update \
-    && apk add --no-cache mysql
-    
-RUN addgroup mysql mysql
+# mariadb is a mysql database.
+RUN			apk add mariadb mariadb-client
 
-COPY setup.sh .
-COPY my.cnf /etc/mysql/my.cnf
+COPY		./files/socketfix.cnf /etc/my.cnf.d/socketfix.cnf
+COPY		./files/ /cpfiles/
+VOLUME		/var/lib/mysql
+RUN chmod +x /cpfiles/entrypoint.sh
 
-VOLUME [ "/var/lib/mysql" ]
-
-EXPOSE 3306
-ENTRYPOINT [ "./setup.sh" ]
+ENTRYPOINT	["/bin/sh", "/cpfiles/entrypoint.sh"]

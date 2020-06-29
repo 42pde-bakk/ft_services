@@ -5,9 +5,9 @@ blu=$'\e[1;34m'
 mag=$'\e[1;35m'
 cyn=$'\e[1;36m'
 end=$'\e[0m'
-# rm -rf ~/.minikube
-# mkdir -p ~/goinfre/minikube
-# ln -s ~/goinfre/minikube ~/.minikube
+rm -rf ~/.minikube
+mkdir -p ~/goinfre/minikube
+ln -s ~/goinfre/minikube ~/.minikube
 
 minikube delete
 
@@ -25,7 +25,7 @@ export MINIKUBE_IP=$(minikube ip)
 printf "Minikube IP: ${MINIKUBE_IP}\n"
 
 sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html > srcs/nginx/homepage-pde-bakk/index.html
-sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/wordpress/tmp.sh > srcs/wordpress/setup.sh
+# sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/wordpress/tmp.sh > srcs/wordpress/setup.sh
 
 echo "Building images..."
 printf "Building nginx image:\t\t"

@@ -25,15 +25,15 @@ spec:
   resources:
     requests:
       storage: 2Gi
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mysql-secret
-type: Opaque
-data:
-  username: YWRtaW4=
-  password: YWRtaW4=
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: mysql-secret
+# type: Opaque
+# data:
+#   username: YWRtaW4=
+#   password: YWRtaW4=
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -54,14 +54,25 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:5.6 # mysql_alpine
-        # imagePullPolicy: Never
+        image: mysql_alpine
+        imagePullPolicy: Never
+        # resources:
+        #   limits:
+        #     memory: "256Mi"
+        #     cpu: "500m"
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: password
+        - name: "DB_USER"
+          value: "bruhuser"
+        - name: "DB_PASS"
+          value: "bruhpass"
+        ports:
+        - containerPort: 3306
+        # env:
+        # - name: MYSQL_ROOT_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-secret
+        #       key: password
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql

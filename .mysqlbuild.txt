@@ -1,0 +1,42 @@
+Sending build context to Docker daemon  2.109MB
+Step 1/7 : FROM		alpine
+ ---> a24bb4013296
+Step 2/7 : RUN			apk add mariadb mariadb-client
+ ---> Running in 6c468be24f3c
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/community/x86_64/APKINDEX.tar.gz
+(1/12) Installing mariadb-common (10.4.13-r0)
+(2/12) Installing libaio (0.3.112-r1)
+(3/12) Installing xz-libs (5.2.5-r0)
+(4/12) Installing ncurses-terminfo-base (6.2_p20200523-r0)
+(5/12) Installing ncurses-libs (6.2_p20200523-r0)
+(6/12) Installing linux-pam (1.3.1-r4)
+(7/12) Installing pcre (8.44-r0)
+(8/12) Installing libgcc (9.3.0-r2)
+(9/12) Installing libstdc++ (9.3.0-r2)
+(10/12) Installing libxml2 (2.9.10-r4)
+(11/12) Installing mariadb (10.4.13-r0)
+Executing mariadb-10.4.13-r0.pre-install
+(12/12) Installing mariadb-client (10.4.13-r0)
+Executing busybox-1.31.1-r16.trigger
+OK: 166 MiB in 26 packages
+Removing intermediate container 6c468be24f3c
+ ---> effaaa334958
+Step 3/7 : COPY		./files/socketfix.cnf /etc/my.cnf.d/socketfix.cnf
+ ---> e8744e608a2a
+Step 4/7 : COPY		./files/ /cpfiles/
+ ---> 9fd540af80e3
+Step 5/7 : VOLUME		/var/lib/mysql
+ ---> Running in ef01ef931cc0
+Removing intermediate container ef01ef931cc0
+ ---> 30a991b423e5
+Step 6/7 : RUN chmod +x /cpfiles/entrypoint.sh
+ ---> Running in 3505a71b0bf9
+Removing intermediate container 3505a71b0bf9
+ ---> 2689e42f6aa3
+Step 7/7 : ENTRYPOINT	["/bin/sh", "/cpfiles/entrypoint.sh"]
+ ---> Running in 27698876c0d4
+Removing intermediate container 27698876c0d4
+ ---> e4355a1d837d
+Successfully built e4355a1d837d
+Successfully tagged mysql_alpine:latest
