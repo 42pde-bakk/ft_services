@@ -1,11 +1,38 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+  - name: http
+    port: 80
+  - name: https
+    port: 443
+  - name: ssh
+    port: 22
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ssh-secret
+data:
+  username: YWRtaW4=
+  password: YWRtaW4=
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx
   labels:
-   app: nginx
+    app: nginx
 spec:
-  replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: nginx
@@ -14,42 +41,76 @@ spec:
       labels:
         app: nginx
     spec:
-      hostNetwork: true # To make Nginx also available on port 80
       containers:
-        - name: nginx
-          image: nginx_alpine
-          imagePullPolicy: IfNotPresent
-          resources:
-              requests:
-                memory: "64Mi"
-                cpu: "250m"
-              limits:
-                memory: "128Mi"
-                cpu: "500m"
-          ports:
-          - containerPort: 80
-            name: http
-          - containerPort: 443
-            name: https
-          - containerPort: 22000
-            name: ssh
-
+      - name: nginx
+        image: nginx_alpine
+        imagePullPolicy: Never
+        env:
+        - name: SSH_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: ssh-secret
+              key: username
+        - name: SSH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ssh-secret
+              key: password
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
 ---
-
 apiVersion: v1
-kind: Service
+kind: ConfigMap
 metadata:
-  name: nginx
-spec:
-  selector:
-    app: nginx
-  type: LoadBalancer
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-      name: http
-    - protocol: TCP
-      port: 443
-      targetPort: 443
-      name: https
+  name: nginx-config
+  namespace: default
+data:
+  default.conf: |
+    server {
+        listen 80       default_server;
+        listen [::]:80  default_server;
+        server_name     _;
+        charset         UTF-8;
+        index           index.html
+        root            /var/www/localhost/htdocs/;
+        location / {
+          try_files $uri $uri/ index.html;
+        }
+        # return 301 https://$server_name$request_uri;
+    }
+    server {
+        listen  443           ssl;
+        listen  [::]:443      ssl;
+        server_name           _;
+        charset               UTF-8;
+        ssl_certificate       /etc/ssl/localhost.crt;
+        ssl_certificate_key   /etc/ssl/localhost.key;
+        index                 index.html;
+        root                  /var/www/localhost/htdocs;
+        location / {
+            try_files $uri $uri/ =404;
+        }
+        location /wordpress/ {
+            proxy_pass  https://wordpress:5050/;
+            rewrite     ^([^.]*[^/])$ $1/ permanent;
+        }
+        location /phpmyadmin/ {
+            proxy_pass  https://phpmyadmin:5000/;
+        }
+        location /grafana/ {
+            proxy_pass          http://grafana:3000/;
+            rewrite             ^/grafana/(.*) /$1 break;
+            proxy_set_header    X-WEBAUTH-USER admin;
+        }
+    }
+  proxy.conf:
+    proxy_set_header    Host $host;
+    proxy_set_header    X-Real-IP $host;
+    proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header    X-Forwarded-Proto $scheme;
+    proxy_set_header    X-Forwarded-Host $host;

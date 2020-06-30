@@ -5,36 +5,13 @@ metadata:
   labels:
     app: wordpress
 spec:
-  type: LoadBalancer
   ports:
   - name: wordpress
     port: 5050
-    protocol: TCP
+    targetPort: 80
   selector:
     app: wordpress
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: wp-pv-claim
-  labels:
-    app: wordpress
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
----
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: wordpress-secret
-# type: Opaque
-# data:
-#   username: YWRtaW4=
-#   password: YWRtaW4=
-# ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -45,55 +22,102 @@ spec:
   selector:
     matchLabels:
       app: wordpress
-      tier: frontend
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
         app: wordpress
-        tier: frontend
     spec:
-      hostNetwork: true
       containers:
-      - image: wordpress_alpine
-        name: wordpress
-        imagePullPolicy: IfNotPresent
-        # resources:
-        #   limits: 
-        #     memory: "256Mi"
-        #     cpu: "500m"
-        env:
-        - name: "WORDPRESS_DB_HOST"
-          value: "service-mysql.default.svc.cluster.local:3306"
-        - name: "WORDPRESS_DB_USER"
-          value: "bruhuser"
-        - name: "WORDPRESS_DB_PASSWORD"
-          value: "bruhpass"
-        - name: "WORDPRESS_DB_NAME"
-          value: "wordpress"
-        # - name: MYSQL_ROOT_PASSWORD
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: mysql-secret
-        #       key: password
-        # - name: WORDPRESS_USERNAME
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: wordpress-secret
-        #       key: username
-        # - name: WORDPRESS_PASSWORD
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: wordpress-secret
-        #       key: password
+      - name: wordpress
+        image: wordpress_alpine
+        imagePullPolicy: Never
         ports:
-        - containerPort: 5050
-          name: wordpress
+        - containerPort: 80
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
+        - name: WORDPRESS_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: wordpress-secret
+              key: username
+        - name: WORDPRESS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wordpress-secret
+              key: password
         volumeMounts:
+        - name: wp-config
+          mountPath: /var/www/localhost/htdocs/wp-config.php
+          subPath: wp-config.php
         - name: wordpress-persistent-storage
-          mountPath: /var/www/html
+          mountPath: /var/www/localhost/htdocs
+          subPath: htdocs
       volumes:
+      - name: wp-config
+        configMap:
+          name: wordpress-config
+          items:
+          - key: wp-config.php
+            path: wp-config.php
       - name: wordpress-persistent-storage
         persistentVolumeClaim:
-          claimName: wp-pv-claim
+          claimName: wordpress-pv-claim
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wordpress-config
+data:
+  wp-config.php: |
+    <?php
+    /*define( 'WP_SITEURL',       '/wordpress/'  );
+    define( 'WP_HOME',          '/wordpress/'  );*/
+    define( 'DB_NAME',          'wordpress'  );
+    define( 'DB_USER',          'root'  );
+    define( 'DB_PASSWORD',      'admin'  );
+    define( 'DB_HOST',          'mysql'  );
+    define( 'DB_CHARSET',       'utf8mb4'  );
+    define( 'DB_COLLATE',       ''  );
+    define( 'AUTH_KEY',         '' );
+    define( 'SECURE_AUTH_KEY',  '' );
+    define( 'LOGGED_IN_KEY',    '' );
+    define( 'SECURE_AUTH_SALT', '' );
+    define( 'LOGGED_IN_SALT',   '' );
+    define( 'NONCE_SALT',       '' );
+    $table_prefix = 'wp_';
+    define( 'WP_DEBUG', false  );
+    if ( ! defined( 'ABSPATH'  )  ) {
+      define( 'ABSPATH', __DIR__ . '/'  );
+    }
+    require_once ABSPATH . 'wp-settings.php';
+    if ( ! empty( $_SERVER['HTTP_X_FORWARDED_HOST']  )  ) {
+      $_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+    }
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wordpress-pv-claim
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: wordpress-secret
+type: Opaque
+data:
+  username: YWRtaW4=
+  password: YWRtaW4=

@@ -1,20 +1,14 @@
-FROM alpine:latest
+FROM alpine:3.11.6
 
-RUN apk update \
-    && apk add php7 php7-fpm php7-opcache php7-gd php7-mysqli php7-zlib php7-curl php7-mbstring php7-json php7-session php7-zip \
-    && mkdir www
+COPY setup.sh /tmp/
+RUN chmod +x /tmp/setup.sh
+ENV PMA_VERSION 5.0.2
 
-# Install phpmyadmin
-RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.1/phpMyAdmin-5.0.1-english.tar.gz \
-	&& tar -xzvf phpMyAdmin-5.0.1-english.tar.gz --strip-components=1 -C /www \
-	&& mkdir /www/tmp \
-	&& chmod 777 /www/tmp
+RUN apk update
+RUN apk add curl lighttpd php7 php7-common php7-iconv php7-json php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom php7-session php-mbstring php7-openssl php7-zlib php7-json php-iconv php-mbstring
 
-COPY config.inc.php /www
+#ADD https://files.phpmyadmin.net/phpMyAdmin/$PMA_VERSION/phpMyAdmin-$PMA_VERSION-all-languages.tar.gz /tmp/
 
-COPY setup.sh .
-RUN chmod +x setup.sh
+EXPOSE 80
 
-EXPOSE 5000
-
-CMD ./setup.sh
+ENTRYPOINT ["/tmp/setup.sh"]

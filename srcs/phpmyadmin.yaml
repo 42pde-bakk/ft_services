@@ -1,3 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin
+  labels:
+    app: phpmyadmin
+spec:
+  type: NodePort
+  ports:
+  - name: phpmyadmin
+    protocol: TCP
+    port: 5000
+    targetPort: 80
+    nodePort: 5000
+  selector:
+    app: phpmyadmin
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,46 +22,84 @@ metadata:
   labels:
     app: phpmyadmin
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: phpmyadmin
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
         app: phpmyadmin
     spec:
       containers:
-        - name: phpmyadmin
-          image: phpmyadmin_alpine
-          imagePullPolicy: Never
-          resources:
-            requests:
-              memory: "32Mi"
-              cpu: "200m"
-          ports:
-            - containerPort: 5000
-          env:
-            - name: PMA_HOST
-              value: mysql
-            - name: PMA_PORT
-              value: "3306"
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-pass
-                  key: password
+      - name: phpmyadmin
+        image: phpmyadmin_alpine
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
+        volumeMounts:
+        - name: phpmyadmin-config
+          mountPath: /var/www/localhost/htdocs/config.inc.php
+          subPath: config.inc.php
+        - name: phpmyadmin-persistent-storage
+          mountPath: /var/www/localhost/htdocs
+          subPath: htdocs
+      volumes:
+      - name: phpmyadmin-config
+        configMap:
+           name: phpmyadmin-config
+      - name: phpmyadmin-persistent-storage
+        persistentVolumeClaim:
+          claimName: phpmyadmin-pv-claim
 ---
 apiVersion: v1
-kind: Service
+kind: ConfigMap
 metadata:
-  name: phpmyadmin
-spec:
-  type: LoadBalancer
-  selector:
+  name: phpmyadmin-config
+data:
+  config.inc.php: |
+    <?php
+    $i = 0;
+    $i++;
+    $cfg['Servers'][$i]['verbose'] = 'phpmyadmin';
+    $cfg['Servers'][$i]['host'] = 'mysql';
+    $cfg['Servers'][$i]['port'] = '';
+    $cfg['Servers'][$i]['socket'] = '';
+    $cfg['Servers'][$i]['auth_type'] = 'cookie';
+    $cfg['Servers'][$i]['user'] = 'root';
+    $cfg['Servers'][$i]['password'] = '';
+    $cfg['blowfish_secret'] = '}aKfm,xyb(CwN)pTsy`-R)\'4`Jx+9|';
+    $cfg['DefaultLang'] = 'en';
+    $cfg['ServerDefault'] = 1;
+    $cfg['UploadDir'] = '';
+    $cfg['SaveDir'] = '';
+    $cfg['PmaAbsoluteUri'] = '/phpmyadmin/';
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: phpmyadmin-pv-claim
+  labels:
     app: phpmyadmin
-  ports:
-  - protocol: TCP
-    port: 5000
-    targetPort: 5000
-    # nodePort: 5000
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: phpmyadmin-secret
+type: Opaque
+data:
+  username: YWRtaW4=
+  password: YWRtaW4=
