@@ -1,4 +1,3 @@
-  
 FROM alpine:latest
 
 MAINTAINER Peer de Bakker <pde-bakk@student.codam.nl>

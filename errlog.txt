@@ -1,4 +1,17 @@
-images errlog
+error: resource(s) were provided, but no name, label selector, or --all flag specified
+Error from server (NotFound): deployments.apps "grafana" not found
+Error from server (NotFound): services "grafana" not found
+Error from server (NotFound): configmaps "grafana-config" not found
+Error from server (NotFound): deployments.apps "influxdb" not found
+Error from server (NotFound): services "influxdb" not found
+Error from server (NotFound): configmaps "influxdb-config" not found
+Error from server (NotFound): deployments.apps "telegraf" not found
+Error from server (NotFound): services "telegraf" not found
+Error from server (NotFound): configmaps "telegraf-config" not found
 unable to prepare context: path "./srcs/ftps2" not found
+error: the path "./srcs/ftps.yaml" does not exist
 unable to prepare context: path "./srcs/influxdb2" not found
+error: the path "./srcs/influxdb.yaml" does not exist
 unable to prepare context: path "./srcs/grafana2" not found
+error: the path "./srcs/grafana.yaml" does not exist
+Error from server (AlreadyExists): secrets "memberlist" already exists

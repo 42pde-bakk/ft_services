@@ -5,10 +5,10 @@ metadata:
   labels:
     app: phpmyadmin
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
   - name: phpmyadmin
-    protocol: TCP
+    # protocol: TCP
     port: 5000
     targetPort: 80
     nodePort: 5000
@@ -32,6 +32,7 @@ spec:
       labels:
         app: phpmyadmin
     spec:
+      # hostNetwork: true
       containers:
       - name: phpmyadmin
         image: phpmyadmin_alpine
@@ -93,7 +94,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
 ---
 apiVersion: v1
 kind: Secret

@@ -68,7 +68,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -91,6 +91,6 @@ metadata:
   name: mysql-secret
 type: Opaque
 data:
-  username: cm9vdAo=
+  username: YWRtaW4=
   password: YWRtaW4=
 

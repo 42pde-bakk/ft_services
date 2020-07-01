@@ -5,10 +5,13 @@ metadata:
   labels:
     app: wordpress
 spec:
+  type: LoadBalancer
   ports:
   - name: wordpress
+    # protocol: TCP
     port: 5050
     targetPort: 80
+    nodePort: 5050
   selector:
     app: wordpress
 ---
@@ -76,8 +79,8 @@ metadata:
 data:
   wp-config.php: |
     <?php
-    /*define( 'WP_SITEURL',       '/wordpress/'  );
-    define( 'WP_HOME',          '/wordpress/'  );*/
+    # /*define( 'WP_SITEURL',       '/wordpress/'  );
+    # define( 'WP_HOME',          '/wordpress/'  );*/
     define( 'DB_NAME',          'wordpress'  );
     define( 'DB_USER',          'root'  );
     define( 'DB_PASSWORD',      'admin'  );
@@ -111,7 +114,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
 ---
 apiVersion: v1
 kind: Secret
