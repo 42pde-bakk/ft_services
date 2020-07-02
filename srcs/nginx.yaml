@@ -96,7 +96,7 @@ data:
             try_files $uri $uri/ =404;
         }
         # location /wordpress/ {
-        #     proxy_pass  http://$server_name:5050;
+        #     proxy_pass  http://wordpress-service:5050;
         #     rewrite     ^([^.]*[^/])$ $1/ permanent;
         # }
         # location = /phpmyadmin/ {
