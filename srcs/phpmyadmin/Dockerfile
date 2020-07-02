@@ -1,14 +1,29 @@
-FROM alpine:3.11.6
+FROM alpine
+# ARG IP
 
-COPY setup.sh /tmp/
-RUN chmod +x /tmp/setup.sh
-ENV PMA_VERSION 5.0.2
+# We install packages
+RUN apk update && apk upgrade && apk add bash \
+&& apk add php7 php7-fpm php7-opcache php7-gd php7-mysqli php7-zlib php7-curl php7-mbstring php7-json php7-session
+RUN apk add telegraf --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted --no-cache
 
-RUN apk update
-RUN apk add curl lighttpd php7 php7-common php7-iconv php7-json php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom php7-session php-mbstring php7-openssl php7-zlib php7-json php-iconv php-mbstring
+# We download PHPMyAdmin
+RUN wget https://files.phpmyadmin.net/phpMyAdmin/4.9.0.1/phpMyAdmin-4.9.0.1-all-languages.tar.gz \
+&& tar -xvf phpMyAdmin-4.9.0.1-all-languages.tar.gz \
+&& mv phpMyAdmin-4.9.0.1-all-languages /www \
+&& rm -rf /var/cache/apk/*
 
-#ADD https://files.phpmyadmin.net/phpMyAdmin/$PMA_VERSION/phpMyAdmin-$PMA_VERSION-all-languages.tar.gz /tmp/
+# We get save the external IP
+# RUN echo $IP > ip.txt
 
+# PHPMyAdmin config file
+# COPY config.inc.php /www/config.inc.php
+
+# Telegraf setup
+# RUN mkdir -p /etc/telegraf
+# COPY ./telegraf.conf /etc/telegraf/telegraf.conf
+
+# Here we go
+COPY setup.sh .
+RUN chmod +x setup.sh
 EXPOSE 80
-
-ENTRYPOINT ["/tmp/setup.sh"]
+CMD ./setup.sh

@@ -30,32 +30,22 @@ spec:
         app: mysql
     spec:
       containers:
-      - name: mysql
-        image: mysql_alpine
-        imagePullPolicy: Never
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: password
+      - envFrom:
+        - secretRef:
+              name: system-secret        
+        name: mysql
+        image: "mysql:5.6"
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 3306
         volumeMounts:
-        - name: mysql-config
-          mountPath: /etc/my.cnf.d/mariadb-server.cnf
-          subPath: mariadb-server.cnf
-        - name: mysql-persistent-storage
-          mountPath: /data
-          subPath: mysql
+          - mountPath: "/var/lib/mysql"
+            name: mysql-pv   
       volumes:
-      - name: mysql-config
-        configMap:
-          name: mysql-config
-          items:
-          - key: mysql.cnf
-            path: mariadb-server.cnf
-      - name: mysql-persistent-storage
-        persistentVolumeClaim:
-          claimName: mysql-pv-claim
+          - name: mysql-pv
+            persistentVolumeClaim:
+              claimName: mysql-pvc
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -68,29 +58,4 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mysql-config
-  namespace: default
-data:
-  mysql.cnf: |
-    [mysqld]
-    user = root
-    port = 3306
-    datadir = /data
-    log-bin = /data/mysql-bin
-    bind-address = 0.0.0.0
-    skip-networking = false
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mysql-secret
-type: Opaque
-data:
-  username: YWRtaW4=
-  password: YWRtaW4=
-
+      storage: 1Gi

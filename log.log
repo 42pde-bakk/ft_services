@@ -10,14 +10,10 @@ configmap "mysql-config" deleted
 [0;33m-------------------------- Wordpress ---------------------------[0m
 deployment.apps "wordpress" deleted
 service "wordpress" deleted
-configmap "wordpress-config" deleted
 [0;33m------------------------- Phpmyadmin ----------------------------[0m
 deployment.apps "phpmyadmin" deleted
 service "phpmyadmin" deleted
 configmap "phpmyadmin-config" deleted
-[0;33m-------------------------- Grafana ------------------------------[0m
-[0;33m-------------------------- InfluxDB -----------------------------[0m
-[0;33m-------------------------- Telegraf -----------------------------[0m
 [0;32mCluster cleaned[0m
 * minikube v1.11.0 on Darwin 10.14.6
 * Using the virtualbox driver based on existing profile
@@ -27,27 +23,21 @@ configmap "phpmyadmin-config" deleted
   - kubelet.authentication-token-webhook=true
   - apiserver.service-node-port-range=3000-35000
 * Verifying Kubernetes components...
-* Enabled addons: default-storageclass, metallb, storage-provisioner
+* Enabled addons: dashboard, default-storageclass, metallb, storage-provisioner
 * Done! kubectl is now configured to use "minikube"
 * The 'metallb' addon is enabled
 * The 'default-storageclass' addon is enabled
 * The 'storage-provisioner' addon is enabled
+* The 'dashboard' addon is enabled
 configmap/config configured
+secret/system-secret configured
 service/mysql created
 deployment.apps/mysql created
 persistentvolumeclaim/mysql-pv-claim unchanged
-configmap/mysql-config created
-secret/mysql-secret configured
 service/wordpress created
 deployment.apps/wordpress created
-configmap/wordpress-config created
-persistentvolumeclaim/wordpress-pv-claim unchanged
-secret/wordpress-secret unchanged
 service/phpmyadmin created
 deployment.apps/phpmyadmin created
-configmap/phpmyadmin-config created
-persistentvolumeclaim/phpmyadmin-pv-claim unchanged
-secret/phpmyadmin-secret unchanged
 service/nginx created
 secret/ssh-secret unchanged
 deployment.apps/nginx created

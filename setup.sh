@@ -5,9 +5,9 @@ blu=$'\e[1;34m'
 mag=$'\e[1;35m'
 cyn=$'\e[1;36m'
 end=$'\e[0m'
-# rm -rf ~/.minikube
-# mkdir -p ~/goinfre/minikube
-# ln -s ~/goinfre/minikube ~/.minikube
+rm -rf ~/.minikube
+mkdir -p ~/goinfre/minikube
+ln -s ~/goinfre/minikube ~/.minikube
 
 :> errlog.txt
 :> log.log
@@ -24,6 +24,7 @@ minikube start	--vm-driver=virtualbox \
 minikube addons enable metallb >> log.log 2>> errlog.txt
 minikube addons enable default-storageclass >> log.log 2>> errlog.txt
 minikube addons enable storage-provisioner >> log.log 2>> errlog.txt
+minikube addons enable dashboard >> log.log 2>> errlog.txt
 echo "Done starting fam"
 eval $(minikube docker-env) # eval $(minikube -p minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)
@@ -49,6 +50,6 @@ printf "Building and deploying nginx:\t\t"
 docker build -t nginx_alpine ./srcs/nginx > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/nginx.yaml >> log.log 2>> errlog.txt
 
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)" >> log.log 2>> errlog.txt
-open http://$MINIKUBE_IP
+# open http://$MINIKUBE_IP
 # To enter terminal:
 # kubectl exec -it <podname> sh
