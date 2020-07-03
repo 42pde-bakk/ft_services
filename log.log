@@ -1,41 +1,32 @@
 [0;33m---------------------------- Secret ------------------------------[0m
 [0;33m---------------------------- Nginx ------------------------------[0m
-service "nginx" deleted
-deployment.apps "nginx" deleted
-configmap "nginx-config" deleted
 [0;33m--------------------------- Mysql -------------------------------[0m
-deployment.apps "mysql" deleted
-service "mysql" deleted
 [0;33m-------------------------- Wordpress ---------------------------[0m
-deployment.apps "wordpress" deleted
 [0;33m------------------------- Phpmyadmin ----------------------------[0m
-deployment.apps "phpmyadmin" deleted
-service "phpmyadmin" deleted
 [0;32mCluster cleaned[0m
 * minikube v1.11.0 on Darwin 10.14.6
-* Using the virtualbox driver based on existing profile
+* Using the virtualbox driver based on user configuration
 * Starting control plane node minikube in cluster minikube
-* Updating the running virtualbox "minikube" VM ...
+* Creating virtualbox VM (CPUs=2, Memory=3000MB, Disk=20000MB) ...
 * Preparing Kubernetes v1.18.3 on Docker 19.03.8 ...
-  - kubelet.authentication-token-webhook=true
-  - apiserver.service-node-port-range=3000-35000
 * Verifying Kubernetes components...
-* Enabled addons: dashboard, default-storageclass, metallb, storage-provisioner
+* Enabled addons: default-storageclass, storage-provisioner
 * Done! kubectl is now configured to use "minikube"
 * The 'metallb' addon is enabled
 * The 'default-storageclass' addon is enabled
 * The 'storage-provisioner' addon is enabled
 * The 'dashboard' addon is enabled
 configmap/config configured
-secret/system-secret configured
+secret/system-secret created
 service/mysql created
 deployment.apps/mysql created
-persistentvolumeclaim/mysql-pvc unchanged
-service/wordpress-service unchanged
-deployment.apps/wordpress created
-service/phpmyadmin created
-deployment.apps/phpmyadmin created
+persistentvolumeclaim/mysql-pvc created
+service/wordpress-svc created
+deployment.apps/wordpress-deployment created
+service/phpmyadmin-svc created
+deployment.apps/phpmyadmin-deployment created
 service/nginx created
-secret/ssh-secret unchanged
+secret/ssh-secret created
 deployment.apps/nginx created
 configmap/nginx-config created
+secret/memberlist created

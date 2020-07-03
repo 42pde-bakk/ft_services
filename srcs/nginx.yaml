@@ -61,13 +61,13 @@ spec:
             secretKeyRef:
               name: ssh-secret
               key: password
-        volumeMounts:
-        - name: nginx-config
-          mountPath: /etc/nginx/conf.d
-      volumes:
-      - name: nginx-config
-        configMap:
-          name: nginx-config
+      #   volumeMounts:
+      #   - name: nginx-config
+      #     mountPath: /etc/nginx/conf.d
+      # volumes:
+      # - name: nginx-config
+      #   configMap:
+      #     name: nginx-config
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -99,10 +99,8 @@ data:
         #     proxy_pass  http://wordpress-service:5050;
         #     rewrite     ^([^.]*[^/])$ $1/ permanent;
         # }
-        # location = /phpmyadmin/ {
-        #     resolver 127.0.0.11;;
-        #     set $pma phpmyadmin:5000;
-        #     proxy_pass  http://$pma;
+        # location /phpmyadmin/ {
+        #     proxy_pass  http://${PHPMYADMIN_SVC_SERVICE_HOST}:${PHPMYADMIN_SVC_SERVICE_PORT};
         # }
         # location /grafana/ {
         #     proxy_pass          http://192.168.99.254:3000/;

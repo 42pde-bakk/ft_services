@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: phpmyadmin
-  labels:
-    app: phpmyadmin
+  name: phpmyadmin-svc
+  # labels:
+  #   app: phpmyadmin
 spec:
-  type: LoadBalancer
+  # type: LoadBalancer
   selector:
-    app: phpmyadmin
+    app: phpmyadmin-deployment
   ports:
   - port: 5000
     targetPort: 80
@@ -17,16 +17,16 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: phpmyadmin
+  name: phpmyadmin-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: phpmyadmin
+      app: phpmyadmin-deployment
   template:
     metadata:
       labels:
-        app: phpmyadmin
+        app: phpmyadmin-deployment
     spec:
       containers:
       - envFrom:

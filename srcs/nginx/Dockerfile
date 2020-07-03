@@ -6,7 +6,9 @@ RUN apk update && \
 	apk add nginx && \
 	apk add openssl && \
 	apk add openssh && \
-	apk add tar
+	apk add tar && \
+	apk add curl && \
+	apk add gettext
 
 RUN adduser -D -g 'www' www && \
 	mkdir /www && \
@@ -23,6 +25,11 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/C=NL/ST=Noord-Ho
 
 # COPY nginx.conf /etc/nginx/
 COPY homepage-pde-bakk/ /var/www/localhost/htdocs/.
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker-entrypoint.sh /
+RUN chmod +x docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 80 443 22
 

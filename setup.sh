@@ -16,11 +16,10 @@ sh cleanup.sh >> log.log 2>> errlog.txt
 
 minikube start	--vm-driver=virtualbox \
 				--cpus=2 --memory 3000 \
-				--bootstrapper=kubeadm	\
-				--extra-config=kubelet.authentication-token-webhook=true \
-				--extra-config=apiserver.service-node-port-range=3000-35000 \
 				>> log.log 2>> errlog.txt
 
+				# --bootstrapper=kubeadm	\
+				# --extra-config=kubelet.authentication-token-webhook=true \
 minikube addons enable metallb >> log.log 2>> errlog.txt
 minikube addons enable default-storageclass >> log.log 2>> errlog.txt
 minikube addons enable storage-provisioner >> log.log 2>> errlog.txt
@@ -47,7 +46,7 @@ docker build -t influxdb_alpine ./srcs/influxdb2 >> /dev/null 2>>errlog.txt && p
 printf "Building and deploying grafana:\t\t"
 docker build -t grafana_alpine ./srcs/grafana2 > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/grafana.yaml >> log.log 2>> errlog.txt
 printf "Building and deploying nginx:\t\t"
-docker build -t nginx_alpine ./srcs/nginx > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/nginx.yaml >> log.log 2>> errlog.txt
+docker build -t nginx_alpine ./srcs/nginx > /dev/null 2>>erllog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/nginx.yaml >> log.log 2>> errlog.txt
 
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)" >> log.log 2>> errlog.txt
 # open http://$MINIKUBE_IP

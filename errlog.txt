@@ -1,12 +1,19 @@
-error: resource(s) were provided, but no name, label selector, or --all flag specified
-Error from server (NotFound): configmaps "mysql-config" not found
-Error from server (NotFound): services "wordpress" not found
-Error from server (NotFound): configmaps "wordpress-config" not found
-Error from server (NotFound): configmaps "phpmyadmin-config" not found
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
 unable to prepare context: path "./srcs/ftps2" not found
 error: the path "./srcs/ftps.yaml" does not exist
 unable to prepare context: path "./srcs/influxdb2" not found
 error: the path "./srcs/influxdb.yaml" does not exist
 unable to prepare context: path "./srcs/grafana2" not found
 error: the path "./srcs/grafana.yaml" does not exist
-Error from server (AlreadyExists): secrets "memberlist" already exists

@@ -1,34 +1,34 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: wordpress
-  labels:
-    app: wordpress
+  name: wordpress-svc
+  # labels:
+  #   app: wordpress-deployment
 spec:
-  type: LoadBalancer
+  # type: LoadBalancer
+  selector:
+    app: wordpress-deployment
   ports:
   - name: wordpress
     port: 5050
     targetPort: 80
-  selector:
-    app: wordpress
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wordpress
+  name: wordpress-deployment
   labels:
-    app: wordpress
+    app: wordpress-deployment
 spec:
   selector:
     matchLabels:
-      app: wordpress
+      app: wordpress-deployment
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: wordpress
+        app: wordpress-deployment
     spec:
       containers:
       - envFrom:
