@@ -5,13 +5,12 @@ metadata:
   # labels:
   #   app: phpmyadmin
 spec:
-  # type: LoadBalancer
+  type: LoadBalancer
   selector:
     app: phpmyadmin-deployment
   ports:
   - port: 5000
     targetPort: 80
-
 ---
 
 apiVersion: apps/v1
@@ -29,11 +28,52 @@ spec:
         app: phpmyadmin-deployment
     spec:
       containers:
-      - envFrom:
-        - secretRef:
-              name: system-secret
-        name: phpmyadmin
-        image: phpmyadmin/phpmyadmin
+      - name: phpmyadmin
+        image: phpmyadmin_alpine
         imagePullPolicy: IfNotPresent
         ports:
-          - containerPort: 80
+        - containerPort: 80
+        volumeMounts:
+        - name: phpmyadmin-config
+          mountPath: /var/www/localhost/htdocs/config.inc.php
+          subPath: config.inc.php
+        - name: phpmyadmin-persistent-storage
+          mountPath: /var/www/localhost/htdocs
+      volumes:
+      - name: phpmyadmin-config
+        configMap:
+           name: phpmyadmin-config
+      - name: phpmyadmin-persistent-storage
+        persistentVolumeClaim:
+          claimName: phpmyadmin-pv-claim
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: phpmyadmin-config
+data:
+  config.inc.php: |
+    <?php
+    $i = 0;
+    $i++;
+    $cfg['Servers'][$i]['host'] = 'mysql';
+    $cfg['blowfish_secret'] = 'i0ULtq/xlL:x;F7AjIYH=2I82cI[Vrly';
+    $cfg['DefaultLang'] = 'en';
+    $cfg['ServerDefault'] = 1;
+    $cfg['UploadDir'] = '';
+    $cfg['SaveDir'] = '';
+    $cfg['PmaAbsoluteUri'] = '/phpmyadmin/';
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: phpmyadmin-pv-claim
+  labels:
+    app: phpmyadmin
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

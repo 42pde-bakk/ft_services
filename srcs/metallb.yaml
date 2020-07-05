@@ -12,28 +12,6 @@ data:
       - 192.168.99.100-192.168.99.255
 
 ---
-
-apiVersion: v1
-kind: Secret
-metadata:
-  name: system-secret
-type: Opaque
-stringData:
-#phpmyadmin-secrets
-  PMA_HOST: mysql
-  PMA_PORT: "3306"
-  MYSQL_ROOT_PASSWORD: admin
-#mysql-secrets
-  MYSQL_ROOT_PASSWORD: admin
-  MYSQL_USER: admin
-  MYSQL_PASSWORD: admin
-  MYSQL_DATABASE: wordpress
-#wordpress-secrets
-  WORDPRESS_DB_HOST: mysql
-  WORDPRESS_DB_USER: admin
-  WORDPRESS_DB_PASSWORD: admin
-  WORDPRESS_DB_NAME: wordpress
----
 # apiVersion: v1
 # kind: Namespace
 # metadata:

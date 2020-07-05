@@ -12,8 +12,8 @@ if [[ ! -d /data/mysql ]]; then
 		MYSQL_ROOT_PASSWORD = "admin"
 	fi
 	
-	touch tfile
-	cat > tfile << EOF
+	tfile=`mktemp`
+	cat > $tfile << EOF
 USE mysql;
 FLUSH PRIVILEGES;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY "$MYSQL_ROOT_PASSWORD" WITH GRANT OPTION;
@@ -21,8 +21,8 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
 ALTER USER 'root'@'localhost' IDENTIFIED BY '';
 EOF
 	
-	/usr/bin/mysqld --user=root --bootstrap --verbose=0 < tfile
-	rm -f tfile
+	/usr/bin/mysqld --user=root --bootstrap --verbose=0 < $tfile
+	rm -f $tfile
 fi
 
 exec /usr/bin/mysqld --user=root --console
