@@ -15,22 +15,23 @@ end=$'\e[0m'
 sh cleanup.sh >> log.log 2>> errlog.txt
 
 minikube start	--vm-driver=virtualbox \
-				--cpus=2 --memory 3000 \
-				>> log.log 2>> errlog.txt
+				--cpus=2 --memory 3000
+				# >> log.log 2>> errlog.txt
 
 				# --bootstrapper=kubeadm	\
 				# --extra-config=kubelet.authentication-token-webhook=true \
-minikube addons enable metallb >> log.log 2>> errlog.txt
-minikube addons enable default-storageclass >> log.log 2>> errlog.txt
-minikube addons enable storage-provisioner >> log.log 2>> errlog.txt
-minikube addons enable dashboard >> log.log 2>> errlog.txt
+minikube addons enable metallb && kubectl apply -f ./srcs/metallb.yaml
+#kubectl apply -f ./srcs/megametallb.yaml >> log.log 2>>errlog.txt
+minikube addons enable default-storageclass #>> log.log 2>> errlog.txt
+minikube addons enable storage-provisioner #>> log.log 2>> errlog.txt
+minikube addons enable dashboard #>> log.log 2>> errlog.txt
 echo "Done starting fam"
 eval $(minikube docker-env) # eval $(minikube -p minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)
 printf "Minikube IP: ${MINIKUBE_IP}\n"
 
 # sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/wordpress/tmp.sh > srcs/wordpress/setup.sh
-kubectl apply -f ./srcs/metallb.yaml >> log.log
+# kubectl apply -f ./srcs/metallb.yaml >> log.log
 
 printf "Building and deploying ftps:\t\t"
 docker build -t ftps_alpine ./srcs/ftps2 --build-arg IP=${IP} > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/ftps.yaml >> log.log 2>> errlog.txt

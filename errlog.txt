@@ -1,9 +1,19 @@
-error: resource(s) were provided, but no name, label selector, or --all flag specified
-Error from server (NotFound): configmaps "mysql-config" not found
-Error from server (NotFound): configmaps "wordpress-config" not found
-Error from server (NotFound): configmaps "phpmyadmin-config" not found
+Unable to connect to the server: net/http: TLS handshake timeout
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
+The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?
 unable to prepare context: path "./srcs/ftps2" not found
 error: the path "./srcs/ftps.yaml" does not exist
+COPY failed: stat /var/lib/docker/tmp/docker-builder050071162/scripts/start.sh: no such file or directory
 unable to prepare context: path "./srcs/influxdb2" not found
 error: the path "./srcs/influxdb.yaml" does not exist
 unable to prepare context: path "./srcs/grafana2" not found
