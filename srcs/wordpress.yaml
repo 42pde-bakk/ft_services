@@ -31,11 +31,15 @@ spec:
         app: wordpress-deployment
     spec:
       containers:
-      - envFrom:
-        - secretRef:
-              name: system-secret
-        name: wordpress
-        image: wordpress:4.8-apache
+      - name: wordpress
+        image: wordpress_alpine
         imagePullPolicy: IfNotPresent
+        env:
+        - name: DB_USER
+          value: root
+        - name: DB_PASS
+          value: pass
+        - name: DB_NAME
+          value: wordpress
         ports:
           - containerPort: 80
