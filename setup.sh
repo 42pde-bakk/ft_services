@@ -1,3 +1,10 @@
+#!/bin/bash
+# function logs() {
+# 	kubectl logs $(kubectl get pods | grep "$1" | awk '{print $1}')
+# }
+# function attach() {
+# 	kubectl exec -it $(kubectl get pods | grep "$1" | awk '{print $1}') sh
+# }
 red=$'\e[1;31m'
 grn=$'\e[1;32m'
 yel=$'\e[1;33m'
@@ -5,9 +12,9 @@ blu=$'\e[1;34m'
 mag=$'\e[1;35m'
 cyn=$'\e[1;36m'
 end=$'\e[0m'
-# rm -rf ~/.minikube
-# mkdir -p ~/goinfre/minikube
-# ln -s ~/goinfre/minikube ~/.minikube
+rm -rf ~/.minikube
+mkdir -p ~/goinfre/minikube
+ln -s ~/goinfre/minikube ~/.minikube
 
 :> errlog.txt
 :> log.log
@@ -15,16 +22,16 @@ end=$'\e[0m'
 sh cleanup.sh >> log.log 2>> errlog.txt
 
 minikube start	--vm-driver=virtualbox \
-				--cpus=2 --memory 3000
-				# >> log.log 2>> errlog.txt
+				--cpus=2 --memory 3000 \
+				>> log.log 2>> errlog.txt
 
 				# --bootstrapper=kubeadm	\
 				# --extra-config=kubelet.authentication-token-webhook=true \
-minikube addons enable metallb && kubectl apply -f ./srcs/metallb.yaml
+minikube addons enable metallb >> log.log 2>>errlog.txt && kubectl apply -f ./srcs/metallb.yaml >> log.log 2>>errlog.txt
 #kubectl apply -f ./srcs/megametallb.yaml >> log.log 2>>errlog.txt
-minikube addons enable default-storageclass #>> log.log 2>> errlog.txt
-minikube addons enable storage-provisioner #>> log.log 2>> errlog.txt
-minikube addons enable dashboard #>> log.log 2>> errlog.txt
+minikube addons enable default-storageclass >> log.log 2>> errlog.txt
+minikube addons enable storage-provisioner >> log.log 2>> errlog.txt
+minikube addons enable dashboard >> log.log 2>> errlog.txt
 echo "Done starting fam"
 eval $(minikube docker-env) # eval $(minikube -p minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)

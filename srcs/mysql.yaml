@@ -35,25 +35,15 @@ spec:
         image: mysql_alpine
         imagePullPolicy: IfNotPresent
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: password
+        - name: DB_USER
+          value: root
+        - name: DB_PASS
+          value: pass
         volumeMounts:
-        - name: mysql-config
-          mountPath: /etc/my.cnf.d/mariadb-server.cnf
-          subPath: mariadb-server.cnf
         - name: mysql-persistent-storage
-          mountPath: /data
-          subPath: mysql
+          mountPath: /var/lib/mysql
+          # subPath: mysql
       volumes:
-      - name: mysql-config
-        configMap:
-          name: mysql-config
-          items:
-          - key: mysql.cnf
-            path: mariadb-server.cnf
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pv-claim
@@ -72,27 +62,26 @@ spec:
     requests:
       storage: 1Gi
 
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mysql-config
-  namespace: default
-data:
-  mysql.cnf: |
-    [mysqld]
-    user = root
-    port = 3306
-    datadir = /data
-    log-bin = /data/mysql-bin
-    bind-address = 0.0.0.0
-    skip-networking = false
-
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mysql-secret
-type: Opaque
-stringData:
-  password: admin
+# ---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: mysql-config
+#   namespace: default
+# data:
+#   mysql.cnf: |
+#     [mysqld]
+#     user = root
+#     port = 3306
+#     datadir = /data
+#     log-bin = /data/mysql-bin
+#     bind-address = 0.0.0.0
+#     skip-networking = false
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: mysql-secret
+# type: Opaque
+# stringData:
+#   password: admin

@@ -1,19 +1,38 @@
 [0;33m---------------------------- Secret ------------------------------[0m
 [0;33m---------------------------- Nginx ------------------------------[0m
+service "nginx" deleted
+deployment.apps "nginx" deleted
+configmap "nginx-config" deleted
 [0;33m--------------------------- Mysql -------------------------------[0m
+deployment.apps "mysql" deleted
+service "mysql" deleted
 [0;33m-------------------------- Wordpress ---------------------------[0m
+deployment.apps "wordpress-deployment" deleted
+service "wordpress-svc" deleted
 [0;33m------------------------- Phpmyadmin ----------------------------[0m
+deployment.apps "phpmyadmin-deployment" deleted
+service "phpmyadmin-svc" deleted
 [0;32mCluster cleaned[0m
-service/mysql unchanged
-deployment.apps/mysql unchanged
+* minikube v1.11.0 on Darwin 10.14.6
+* Using the virtualbox driver based on existing profile
+* Starting control plane node minikube in cluster minikube
+* Updating the running virtualbox "minikube" VM ...
+* Preparing Kubernetes v1.18.3 on Docker 19.03.8 ...
+* Verifying Kubernetes components...
+* Enabled addons: dashboard, default-storageclass, metallb, storage-provisioner
+* Done! kubectl is now configured to use "minikube"
+* The 'metallb' addon is enabled
+configmap/config configured
+* The 'default-storageclass' addon is enabled
+* The 'storage-provisioner' addon is enabled
+* The 'dashboard' addon is enabled
+service/mysql created
+deployment.apps/mysql created
 persistentvolumeclaim/mysql-pv-claim unchanged
-configmap/mysql-config unchanged
-secret/mysql-secret configured
-service/wordpress-svc unchanged
-deployment.apps/wordpress-deployment unchanged
+service/wordpress-svc created
+deployment.apps/wordpress-deployment created
 service/phpmyadmin-svc created
 deployment.apps/phpmyadmin-deployment created
-configmap/phpmyadmin-config created
 persistentvolumeclaim/phpmyadmin-pv-claim unchanged
 service/nginx created
 secret/ssh-secret unchanged
