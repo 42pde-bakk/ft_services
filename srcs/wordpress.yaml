@@ -41,5 +41,7 @@ spec:
           value: pass
         - name: DB_NAME
           value: wordpress
+        - name: DB_HOST
+          value: mysql.default.svc.cluster.local:3306
         ports:
           - containerPort: 80

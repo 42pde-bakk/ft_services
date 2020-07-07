@@ -35,10 +35,14 @@ spec:
         image: mysql_alpine
         imagePullPolicy: IfNotPresent
         env:
+        - name: DB_NAME
+          value: wordpress
         - name: DB_USER
           value: root
         - name: DB_PASS
           value: pass
+        - name: MYSQL_HOME
+          value: "/etc/"
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql

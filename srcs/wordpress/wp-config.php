@@ -24,13 +24,14 @@ foreach ($vars as $var) {
 define( 'DB_NAME', 'wordpress' );
 
 /** MySQL database username */
-define( 'DB_USER', 'peer' );
+define( 'DB_USER', 'root' );
 
 /** MySQL database password */
-define( 'DB_PASSWORD', 'pass' );
+define( 'DB_PASS', 'pass' );
 
 /** MySQL hostname */
-define( 'DB_HOST', 'mysql' );
+define( 'DB_HOST', 'mysql.default.svc.cluster.local:3306' );
+// define( 'DB_HOST', 'mysql' );
 
 define('WP_HOME', 'http://${WORDPRESS_SVC_SERVICE_HOST}:${WORDPRESS_SVC_SERVICE_PORT}' );
 define('WP_SITEURL', 'http://${WORDPRESS_SVC_SERVICE_HOST}:${WORDPRESS_SVC_SERVICE_PORT}' );

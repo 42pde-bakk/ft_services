@@ -21,17 +21,17 @@ kubectl delete configMaps/nginx-config
 echo "${Yellow}--------------------------- Mysql -------------------------------${Color_Off}"
 kubectl delete deployment/mysql
 kubectl delete services/mysql
-kubectl delete configMaps/mysql-config
+# kubectl delete configMaps/mysql-config
 
 echo "${Yellow}-------------------------- Wordpress ---------------------------${Color_Off}"
 kubectl delete deployment/wordpress-deployment
 kubectl delete services wordpress-svc
-kubectl delete configMaps/wordpress-config
+# kubectl delete configMaps/wordpress-config
 
 echo "${Yellow}------------------------- Phpmyadmin ----------------------------${Color_Off}"
 kubectl delete deployment/phpmyadmin-deployment
 kubectl delete service/phpmyadmin-svc
-kubectl delete configMaps/phpmyadmin-config
+# kubectl delete configMaps/phpmyadmin-config
 
 # echo "${Yellow}-------------------------- Grafana ------------------------------${Color_Off}"
 # kubectl delete deployment/grafana

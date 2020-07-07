@@ -12,9 +12,9 @@ blu=$'\e[1;34m'
 mag=$'\e[1;35m'
 cyn=$'\e[1;36m'
 end=$'\e[0m'
-rm -rf ~/.minikube
-mkdir -p ~/goinfre/minikube
-ln -s ~/goinfre/minikube ~/.minikube
+# rm -rf ~/.minikube
+# mkdir -p ~/goinfre/minikube
+# ln -s ~/goinfre/minikube ~/.minikube
 
 :> errlog.txt
 :> log.log
@@ -27,8 +27,8 @@ minikube start	--vm-driver=virtualbox \
 
 				# --bootstrapper=kubeadm	\
 				# --extra-config=kubelet.authentication-token-webhook=true \
-minikube addons enable metallb >> log.log 2>>errlog.txt && kubectl apply -f ./srcs/metallb.yaml >> log.log 2>>errlog.txt
-#kubectl apply -f ./srcs/megametallb.yaml >> log.log 2>>errlog.txt
+# minikube addons enable metallb >> log.log 2>>errlog.txt && sleep 2 && kubectl apply -f ./srcs/metallb.yaml >> log.log 2>>errlog.txt
+kubectl apply -f ./srcs/megametallb.yaml >> log.log 2>>errlog.txt
 minikube addons enable default-storageclass >> log.log 2>> errlog.txt
 minikube addons enable storage-provisioner >> log.log 2>> errlog.txt
 minikube addons enable dashboard >> log.log 2>> errlog.txt
@@ -48,20 +48,22 @@ docker build -t mysql_alpine ./srcs/mysql > /dev/null 2>>errlog.txt && printf "[
 
 printf "Building and deploying wordpress:\t"
 docker build -t wordpress_alpine ./srcs/wordpress > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/wordpress.yaml >> log.log 2>> errlog.txt
-WORDPRESS_IP=`kubectl get services | awk '/wordpress-svc/ {print $4}'`
 
 printf "Building and deploying phpmyadmin:\t"
 docker build -t phpmyadmin_alpine ./srcs/phpmyadmin > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/phpmyadmin.yaml >> log.log 2>> errlog.txt 
-PHPMYADMIN_IP=`kubectl get services | awk '/phpmyadmin-svc/ {print $4}'`
 
 printf "Building and deploying influxdb:\t"
 docker build -t influxdb_alpine ./srcs/influxdb2 >> /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/influxdb.yaml >> log.log 2>> errlog.txt
 
 printf "Building and deploying grafana:\t\t"
 docker build -t grafana_alpine ./srcs/grafana2 > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/grafana.yaml >> log.log 2>> errlog.txt
-GRAFANA_IP=`kubectl get services | awk '/grafana-svc/ {print $4}'`
 
+sleep 5;
 printf "Building and deploying nginx:\t\t"
+WORDPRESS_IP=`kubectl get services | awk '/wordpress-svc/ {print $4}'`
+PHPMYADMIN_IP=`kubectl get services | awk '/phpmyadmin-svc/ {print $4}'`
+GRAFANA_IP=`kubectl get services | awk '/grafana-svc/ {print $4}'`
+printf "WP_IP=$WORDPRESS_IP, PMA=$PHPMYADMIN_IP, GRAF=$GRAFANA_IP\n"
 sed -e "s/PHPMYADMIN_IP/$PHPMYADMIN_IP/g" -e "s/WORDPRESS_IP/$WORDPRESS_IP/g" -e "s/GRAFANA_IP/$GRAFANA_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html > srcs/nginx/homepage-pde-bakk/index.html
 docker build -t nginx_alpine ./srcs/nginx > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/nginx.yaml >> log.log 2>> errlog.txt
 
