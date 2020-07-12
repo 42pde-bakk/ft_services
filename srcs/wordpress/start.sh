@@ -19,11 +19,11 @@ if ! $(wp core is-installed); then
     
     wp core download --allow-root
     echo "after core download"
-    wp core install --allow-root --url=192.168.99.100:5050 --title="Peers site" --admin_user="peer" --admin_password="pass" --admin_email="pde-bakk@student.codam.nl" --skip-email
+    wp core install --allow-root --url=wordpress/ --title="Peers site" --admin_user="peer" --admin_password="pass" --admin_email="pde-bakk@student.codam.nl" --skip-email
     echo "after core install"
     :> /tmp/postid
-    wp post create --post-title="They hated him because He told them the truth" --post-content="fmlorem ipsum" --post_excerpt=tag --post_status=publish | awk '{gsub(/[.]/, ""); print $4}' > /tmp/postid
-    echo "created a post"
+    wp post create --post_author=Peer --post_category="Memes" --post-title="They hated him because He told them the truth" --post-content="fmlorem ipsum" --post_excerpt=tag --post_status=publish | awk '{gsub(/[.]/, ""); print $4}' > /tmp/postid
+    echo -n "created a post with id: "; cat /tmp/postid; echo ""
     wp media import ft_services.jpg --title=fuckft_services --post_id=$(cat /tmp/postid) --featured_image
     # wp post meta add % _thumbnail_id $ATTACHMENT_ID
     # wp post list --post_type=post --format-ids | xargs -d ' ' -I % wp post meta add % _thumbnail_id $ATTACHMENT_ID
@@ -40,8 +40,6 @@ wp theme install twentyten > /dev/null
 wp theme install twentytwenty > /dev/null
 # wp theme activate winter > /dev/null
 
-
-wp plugin install woocommerce > /dev/null
-wp plugin install woocommerce > /dev/null
+wp plugin install woocommerce
 cd /
 php -S 0.0.0.0:80 -t /www/

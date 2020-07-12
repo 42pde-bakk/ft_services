@@ -2,10 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: phpmyadmin-svc
-  # labels:
-  #   app: phpmyadmin
+  labels:
+    app: phpmyadmin-deployment
 spec:
-  type: LoadBalancer
+  # type: LoadBalancer
   selector:
     app: phpmyadmin-deployment
   ports:
@@ -47,7 +47,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: phpmyadmin-pv-claim
   labels:
-    app: phpmyadmin
+    app: phpmyadmin-deployment
 spec:
   accessModes:
     - ReadWriteOnce

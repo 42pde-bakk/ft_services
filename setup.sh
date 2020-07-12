@@ -18,17 +18,18 @@ ln -s ~/goinfre/minikube ~/.minikube
 
 :> errlog.txt
 :> log.log
-minikube delete
-# sh cleanup.sh >> log.log 2>> /dev/null
+# minikube delete
+sh cleanup.sh >> log.log 2>> /dev/null
 
 minikube start	--vm-driver=virtualbox \
 				--cpus=2 --memory 3000 \
+				--extra-config=apiserver.service-node-port-range=3000-35000 \
 				>> log.log 2>> errlog.txt
 
 				# --bootstrapper=kubeadm	\
 				# --extra-config=kubelet.authentication-token-webhook=true \
-# minikube addons enable metallb >> log.log 2>>errlog.txt && sleep 2 && kubectl apply -f ./srcs/metallb.yaml >> log.log 2>>errlog.txt
-kubectl apply -f ./srcs/megametallb.yaml >> log.log 2>>errlog.txt
+minikube addons enable metallb >> log.log 2>>errlog.txt && sleep 2 && kubectl apply -f ./srcs/metallb.yaml >> log.log 2>>errlog.txt
+# kubectl apply -f ./srcs/megametallb.yaml >> log.log 2>>errlog.txt
 minikube addons enable default-storageclass >> log.log 2>> errlog.txt
 minikube addons enable storage-provisioner >> log.log 2>> errlog.txt
 minikube addons enable dashboard >> log.log 2>> errlog.txt
@@ -67,8 +68,10 @@ printf "WP_IP=$WORDPRESS_IP, PMA=$PHPMYADMIN_IP, GRAF=$GRAFANA_IP\n"
 printf "Building and deploying nginx:\t\t"
 sed -e "s/PHPMYADMIN_IP/$PHPMYADMIN_IP/g" -e "s/WORDPRESS_IP/$WORDPRESS_IP/g" -e "s/GRAFANA_IP/$GRAFANA_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html > srcs/nginx/homepage-pde-bakk/index.html
 docker build -t nginx_alpine ./srcs/nginx > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/nginx.yaml >> log.log 2>> errlog.txt
+NGINX_IP=`kubectl get services | awk '/nginx/ {print $4}'`
 
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)" >> log.log 2>> errlog.txt
 # open http://$MINIKUBE_IP
+open http://$NGINX_IP:80
 # To enter terminal:
 # kubectl exec -it <podname> sh

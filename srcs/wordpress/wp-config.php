@@ -15,10 +15,10 @@ define( 'DB_HOST', '${DB_HOST}' );
 
 // define('WP_HOME', 'http://${WORDPRESS_SVC_SERVICE_HOST}:${WORDPRESS_SVC_SERVICE_PORT}' );
 // define('WP_SITEURL', 'http://${WORDPRESS_SVC_SERVICE_HOST}:${WORDPRESS_SVC_SERVICE_PORT}' );
-define('WP_HOME', 'http://192.168.99.100:5050' );
-define('WP_SITEURL', 'http://192.168.99.100:5050' );
-// define('WP_HOME', '/wordpress/' );
-// define('WP_SITEURL', '/wordpress/' );
+// define('WP_HOME', 'http://192.168.99.100:5050' );
+// define('WP_SITEURL', 'http://192.168.99.100:5050' );
+define('WP_HOME', '/wordpress/' );
+define('WP_SITEURL', '/wordpress/' );
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
