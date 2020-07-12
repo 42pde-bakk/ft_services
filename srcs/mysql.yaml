@@ -38,7 +38,7 @@ spec:
         - name: DB_NAME
           value: wordpress
         - name: DB_USER
-          value: root
+          value: mysql
         - name: DB_PASS
           value: pass
         - name: MYSQL_HOME
@@ -65,27 +65,3 @@ spec:
   resources:
     requests:
       storage: 1Gi
-
-# ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: mysql-config
-#   namespace: default
-# data:
-#   mysql.cnf: |
-#     [mysqld]
-#     user = root
-#     port = 3306
-#     datadir = /data
-#     log-bin = /data/mysql-bin
-#     bind-address = 0.0.0.0
-#     skip-networking = false
-# ---
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: mysql-secret
-# type: Opaque
-# stringData:
-#   password: admin

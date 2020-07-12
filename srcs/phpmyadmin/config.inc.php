@@ -19,11 +19,12 @@ $cfg['Servers'][$i]['compress'] = false;
 $cfg['Servers'][$i]['AllowNoPassword'] = true;
 
 $cfg['Servers'][$i]['port'] = '3306';
-$cfg['Servers'][$i]['user'] = 'root';
+$cfg['Servers'][$i]['user'] = 'mysql';
 $cfg['Servers'][$i]['password'] = 'pass';
 
 /* Directories for saving/loading files from server */
 $cfg['UploadDir'] = '';
+// $cfg['PmaAbsoluteUri'] = '/phpmyadmin/';
 $cfg['SaveDir'] = '';
 
 $cfg['TempDir'] = 'tmp';

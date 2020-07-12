@@ -1,40 +1,24 @@
 <?php
-/**
- * List of env variables
- */
-$vars = array(
-    'DB_NAME',
-	'DB_USER',
-	'DB_PASSWORD',
-	'DB_HOST'
-);
-
-/**
- * Stock env variables in tab
- */
-foreach ($vars as $var) {
-    $env = getenv($var);
-    if (!isset($_ENV[$var]) && $env !== false) {
-        $_ENV[$var] = $env;
-    }
-}
-
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'wordpress' );
+define( 'DB_NAME', '${DB_NAME}' );
 
 /** MySQL database username */
-define( 'DB_USER', 'root' );
+define( 'DB_USER', 'mysql' );
 
 /** MySQL database password */
-define( 'DB_PASS', 'pass' );
+define( 'DB_PASSWORD', '${DB_PASS}');
 
 /** MySQL hostname */
-define( 'DB_HOST', 'mysql.default.svc.cluster.local:3306' );
-// define( 'DB_HOST', 'mysql' );
+// define( 'DB_HOST', 'mysql.default.svc.cluster.local:3306' );
+define( 'DB_HOST', '${DB_HOST}' );
 
-define('WP_HOME', 'http://${WORDPRESS_SVC_SERVICE_HOST}:${WORDPRESS_SVC_SERVICE_PORT}' );
-define('WP_SITEURL', 'http://${WORDPRESS_SVC_SERVICE_HOST}:${WORDPRESS_SVC_SERVICE_PORT}' );
+// define('WP_HOME', 'http://${WORDPRESS_SVC_SERVICE_HOST}:${WORDPRESS_SVC_SERVICE_PORT}' );
+// define('WP_SITEURL', 'http://${WORDPRESS_SVC_SERVICE_HOST}:${WORDPRESS_SVC_SERVICE_PORT}' );
+define('WP_HOME', 'http://192.168.99.100:5050' );
+define('WP_SITEURL', 'http://192.168.99.100:5050' );
+// define('WP_HOME', '/wordpress/' );
+// define('WP_SITEURL', '/wordpress/' );
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );

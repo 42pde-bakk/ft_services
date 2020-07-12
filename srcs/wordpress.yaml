@@ -35,13 +35,13 @@ spec:
         image: wordpress_alpine
         imagePullPolicy: IfNotPresent
         env:
-        - name: DB_USER
-          value: root
-        - name: DB_PASS
-          value: pass
         - name: DB_NAME
           value: wordpress
+        - name: DB_USER
+          value: mysql
+        - name: DB_PASS
+          value: pass
         - name: DB_HOST
-          value: mysql.default.svc.cluster.local:3306
+          value: mysql
         ports:
           - containerPort: 80
