@@ -4,7 +4,7 @@
 define( 'DB_NAME', '${DB_NAME}' );
 
 /** MySQL database username */
-define( 'DB_USER', 'mysql' );
+define( 'DB_USER', '${DB_USER}' );
 
 /** MySQL database password */
 define( 'DB_PASSWORD', '${DB_PASS}');

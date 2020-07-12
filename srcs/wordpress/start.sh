@@ -21,9 +21,10 @@ if ! $(wp core is-installed); then
     echo "after core download"
     wp core install --allow-root --url=192.168.99.100:5050 --title="Peers site" --admin_user="peer" --admin_password="pass" --admin_email="pde-bakk@student.codam.nl" --skip-email
     echo "after core install"
-    wp post create --post-title="They hated him because He told them the truth" --post-content="fmlorem ipsum" --post_excerpt=tag --post_status=publish | awk '{gsub(/[.]/, ""); print $4}'
+    :> /tmp/postid
+    wp post create --post-title="They hated him because He told them the truth" --post-content="fmlorem ipsum" --post_excerpt=tag --post_status=publish | awk '{gsub(/[.]/, ""); print $4}' > /tmp/postid
     echo "created a post"
-    wp media import ft_services.jpg --title=fuckft_services --post_id=$(wp post create --post-title="They hated him because He told them the truth" --post-content="fmlorem ipsum" --post_excerpt=tag --post_status=publish | awk '{gsub(/[.]/, ""); print $4}') --featured_image
+    wp media import ft_services.jpg --title=fuckft_services --post_id=$(cat /tmp/postid) --featured_image
     # wp post meta add % _thumbnail_id $ATTACHMENT_ID
     # wp post list --post_type=post --format-ids | xargs -d ' ' -I % wp post meta add % _thumbnail_id $ATTACHMENT_ID
     # echo "after posting the truth"

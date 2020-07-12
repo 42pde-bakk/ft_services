@@ -24,7 +24,7 @@ $cfg['Servers'][$i]['password'] = 'pass';
 
 /* Directories for saving/loading files from server */
 $cfg['UploadDir'] = '';
-// $cfg['PmaAbsoluteUri'] = '/phpmyadmin/';
+$cfg['PmaAbsoluteUri'] = '/phpmyadmin/';
 $cfg['SaveDir'] = '';
 
 $cfg['TempDir'] = 'tmp';

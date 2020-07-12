@@ -12,14 +12,14 @@ blu=$'\e[1;34m'
 mag=$'\e[1;35m'
 cyn=$'\e[1;36m'
 end=$'\e[0m'
-# rm -rf ~/.minikube
-# mkdir -p ~/goinfre/minikube
-# ln -s ~/goinfre/minikube ~/.minikube
+rm -rf ~/.minikube
+mkdir -p ~/goinfre/minikube
+ln -s ~/goinfre/minikube ~/.minikube
 
 :> errlog.txt
 :> log.log
-# minikube delete
-sh cleanup.sh >> log.log 2>> /dev/null
+minikube delete
+# sh cleanup.sh >> log.log 2>> /dev/null
 
 minikube start	--vm-driver=virtualbox \
 				--cpus=2 --memory 3000 \
@@ -34,7 +34,7 @@ minikube addons enable storage-provisioner >> log.log 2>> errlog.txt
 minikube addons enable dashboard >> log.log 2>> errlog.txt
 echo "Done starting fam"
 eval $(minikube docker-env) # eval $(minikube -p minikube docker-env)
-docker system prune -f > /dev/null
+# docker system prune -f > /dev/null
 export MINIKUBE_IP=$(minikube ip)
 printf "Minikube IP: ${MINIKUBE_IP}\n"
 
