@@ -19,7 +19,7 @@ ln -s ~/goinfre/minikube ~/.minikube
 :> errlog.txt
 :> log.log
 # minikube delete
-# sh cleanup.sh >> log.log 2>> /dev/null
+sh cleanup.sh >> log.log 2>> /dev/null
 
 minikube start	--vm-driver=virtualbox \
 				--cpus=2 --memory 3000 \
@@ -41,7 +41,7 @@ export MINIKUBE_IP=$(minikube ip)
 # kubectl apply -f ./srcs/metallb.yaml >> log.log
 
 printf "Building and deploying ftps:\t\t"
-docker build -t ftps_alpine ./srcs/ftps > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/ftps.yaml >> log.log 2>> errlog.txt
+docker build -t ftps_alpine ./srcs/ftps2 > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/ftps.yaml >> log.log 2>> errlog.txt
 
 printf "Building and deploying mysql:\t\t"
 docker build -t mysql_alpine ./srcs/mysql > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/mysql.yaml >> log.log 2>> errlog.txt
@@ -53,10 +53,10 @@ printf "Building and deploying phpmyadmin:\t"
 docker build -t phpmyadmin_alpine ./srcs/phpmyadmin > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/phpmyadmin.yaml >> log.log 2>> errlog.txt 
 
 printf "Building and deploying influxdb:\t"
-docker build -t influxdb_alpine ./srcs/influxdb >> /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/influxdb.yaml >> log.log 2>> errlog.txt
+docker build -t influxdb_alpine ./srcs/influxdb2 > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/influxdb.yaml >> log.log 2>> errlog.txt
 
 printf "Building and deploying grafana:\t\t"
-docker build -t grafana_alpine ./srcs/grafana > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/grafana.yaml >> log.log 2>> errlog.txt
+docker build -t grafana_alpine ./srcs/grafana2 > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/grafana.yaml >> log.log 2>> errlog.txt
 
 # sleep 5;
 # WORDPRESS_IP=`kubectl get services | awk '/wordpress-svc/ {print $4}'`

@@ -27,6 +27,7 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/C=NL/ST=Noord-Ho
 COPY homepage-pde-bakk/ /var/www/localhost/htdocs/.
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY proxy.conf /etc/nginx/conf.d/proxy.conf
 COPY docker-entrypoint.sh /
 RUN chmod +x docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
