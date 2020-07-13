@@ -13,6 +13,10 @@ echo "${Yellow}---------------------------- Secret -----------------------------
 kubectl delete secrets
 # kubectl delete pvc --all --grace-period=0 --force &
 
+echo "${Yellow}---------------------------- Ftps ------------------------------${Color_Off}"
+kubectl delete services ftps-svc
+kubectl delete deployment ftps
+
 echo "${Yellow}---------------------------- Nginx ------------------------------${Color_Off}"
 kubectl delete services nginx
 kubectl delete deployment nginx
@@ -33,13 +37,14 @@ kubectl delete deployment/phpmyadmin-deployment
 kubectl delete service/phpmyadmin-svc
 # kubectl delete configMaps/phpmyadmin-config
 
-# echo "${Yellow}-------------------------- Grafana ------------------------------${Color_Off}"
-# kubectl delete deployment/grafana
-# kubectl delete service/grafana
-# kubectl delete configMaps/grafana-config
-# echo "${Yellow}-------------------------- InfluxDB -----------------------------${Color_Off}"
-# kubectl delete deployment/influxdb
-# kubectl delete service/influxdb
-# kubectl delete configMaps/influxdb-config
+echo "${Yellow}-------------------------- Grafana ------------------------------${Color_Off}"
+kubectl delete deployment/grafana
+kubectl delete service/grafana
+kubectl delete configMaps/grafana-config
+
+echo "${Yellow}-------------------------- InfluxDB -----------------------------${Color_Off}"
+kubectl delete deployment/influxdb
+kubectl delete service/influxdb
+kubectl delete configMaps/influxdb-config
 
 echo "${Green}Cluster cleaned${Color_Off}"

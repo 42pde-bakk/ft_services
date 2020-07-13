@@ -11,17 +11,18 @@ mv wp-cli.phar /usr/local/bin/wp
 echo "start"
 rm -rf /root/.wp-cli
 echo "real start"
-cd /www/
+cd /www
 wp core is-installed
-echo $?
-if ! $(wp core is-installed); then
-    echo "start iffi"
-    
+# if ! $(wp core is-installed --path=/www/); then
+if [ $? == 1 ]
+then
+    echo "apparently exit status was 1"
     wp core download --allow-root
     echo "after core download"
     wp core install --allow-root --url=wordpress/ --title="Peers site" --admin_user="peer" --admin_password="pass" --admin_email="pde-bakk@student.codam.nl" --skip-email
     echo "after core install"
     :> /tmp/postid
+    wp term create category Memes
     wp post create --post_author=Peer --post_category="Memes" --post-title="They hated him because He told them the truth" --post-content="fmlorem ipsum" --post_excerpt=tag --post_status=publish | awk '{gsub(/[.]/, ""); print $4}' > /tmp/postid
     echo -n "created a post with id: "; cat /tmp/postid; echo ""
     wp media import ft_services.jpg --title=fuckft_services --post_id=$(cat /tmp/postid) --featured_image

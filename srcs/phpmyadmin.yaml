@@ -5,7 +5,6 @@ metadata:
   labels:
     app: phpmyadmin-deployment
 spec:
-  # type: LoadBalancer
   selector:
     app: phpmyadmin-deployment
   ports:

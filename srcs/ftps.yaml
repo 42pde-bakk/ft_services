@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ftps-svc
+  labels:
+    app: ftps
+spec:
+  type: LoadBalancer
+  selector:
+    app: ftps
+  ports:
+  - name: ftp-data
+    port: 20
+  - name: ftp-connection
+    port: 21
+  - name: pftp-data-0
+    port: 30000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ftps
+  labels:
+    app: ftps
+spec:
+  selector:
+    matchLabels:
+      app: ftps
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ftps
+    spec:
+      containers:
+      - name: ftps
+        image: ftps_alpine
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 20
+        - containerPort: 21
+        - containerPort: 30000
+        env:
+        - name: USER
+          value: peer
+        - name: PASS
+          value: pass
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: HOSTNAME 
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name

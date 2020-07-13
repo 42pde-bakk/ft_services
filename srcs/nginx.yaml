@@ -41,10 +41,6 @@ spec:
       labels:
         app: nginx
     spec:
-      # hostAliases:
-      #   - ip: 127.1.1.1
-      #     hostnames:
-      #       - wagwan.local.peer
       # hostNetwork: true #FUCK THIS LINE
       containers:
       - name: nginx

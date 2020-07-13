@@ -1,0 +1,130 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb
+  labels:
+    app: influxdb
+spec:
+  type: ClusterIP
+  selector:
+    app: influxdb
+  ports:
+  - port: 8086
+    targetPort: 8086
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb
+  labels:
+    app: influxdb
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: influxdb
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      serviceAccountName: telegraf
+      containers:
+      - name: influxdb
+        image: influxdb_alpine
+        imagePullPolicy: Never
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: HOSTNAME 
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        volumeMounts:
+        - name: influxdb-config
+          mountPath: /etc/influxdb.conf
+          subPath: influxdb.conf
+        - name: telegraf-config
+          mountPath: /etc/telegraf.conf.d
+        - name: influxdb-persistent-storage
+          mountPath: /influxdata
+      volumes:
+      - name: influxdb-config
+        configMap:
+          name: influxdb-config
+      - name: telegraf-config
+        configMap:
+          name: telegraf-config
+      - name: influxdb-persistent-storage
+        persistentVolumeClaim:
+          claimName: influxdb-pv-claim
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: influxdb-config
+  namespace: default
+data:
+  influxdb.conf: |
+    [meta]
+      dir = "/influxdata/meta"
+    [data]
+      dir = "/influxdata/data"
+      wal-dir = "/influxdata/wal"
+    [http]
+      enabled = true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf-config
+  namespace: default
+data:
+  kubernetes.conf: |
+    [[inputs.kubernetes]]
+    url = "https://$HOST_IP:10250"
+    label_include = ["kubernetes_pod_container"]
+    insecure_skip_verify = true
+  kube_inventory.conf: |
+    [[inputs.kube_inventory]]
+    url = "https://kubernetes"
+    namespace = "default"
+    insecure_skip_verify = true
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: influxdb-pv-claim
+  labels:
+    app: influxdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: telegraf
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: telegraf
+  namespace: default
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: telegraf
+  labels:
+    app: influxdb
