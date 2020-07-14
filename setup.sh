@@ -1,10 +1,4 @@
 #!/bin/bash
-# function logs() {
-# 	kubectl logs $(kubectl get pods | grep "$1" | awk '{print $1}')
-# }
-# function attach() {
-# 	kubectl exec -it $(kubectl get pods | grep "$1" | awk '{print $1}') sh
-# }
 red=$'\e[1;31m'
 grn=$'\e[1;32m'
 yel=$'\e[1;33m'
@@ -19,29 +13,25 @@ ln -s ~/goinfre/minikube ~/.minikube
 :> errlog.txt
 :> log.log
 # minikube delete
-sh cleanup.sh >> log.log 2>> /dev/null
+# sh cleanup.sh >> log.log 2>> /dev/null
 
 minikube start	--vm-driver=virtualbox \
-				--cpus=2 --memory 3000 \
-				--extra-config=apiserver.service-node-port-range=3000-35000 \
-				>> log.log 2>> errlog.txt
+				--cpus=2 --memory 3000
 
-				# --bootstrapper=kubeadm	\
-				# --extra-config=kubelet.authentication-token-webhook=true \
 minikube addons enable metallb >> log.log 2>>errlog.txt && sleep 2 && kubectl apply -f ./srcs/metallb.yaml >> log.log 2>>errlog.txt
 # kubectl apply -f ./srcs/megametallb.yaml >> log.log 2>>errlog.txt
 minikube addons enable default-storageclass >> log.log 2>> errlog.txt
 minikube addons enable storage-provisioner >> log.log 2>> errlog.txt
 minikube addons enable dashboard >> log.log 2>> errlog.txt
-echo "Done starting fam"
 eval $(minikube docker-env) # eval $(minikube -p minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)
 
+# sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/ftps/vsftpd.conf
 # sed "s/MINIKUBE_IP/$MINIKUBE_IP/g" srcs/wordpress/tmp.sh > srcs/wordpress/setup.sh
 # kubectl apply -f ./srcs/metallb.yaml >> log.log
 
 printf "Building and deploying ftps:\t\t"
-docker build -t ftps_alpine ./srcs/ftps2 > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/ftps.yaml >> log.log 2>> errlog.txt
+docker build -t ftps_alpine ./srcs/ftps > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/ftps.yaml >> log.log 2>> errlog.txt
 
 printf "Building and deploying mysql:\t\t"
 docker build -t mysql_alpine ./srcs/mysql > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/mysql.yaml >> log.log 2>> errlog.txt
@@ -53,10 +43,13 @@ printf "Building and deploying phpmyadmin:\t"
 docker build -t phpmyadmin_alpine ./srcs/phpmyadmin > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/phpmyadmin.yaml >> log.log 2>> errlog.txt 
 
 printf "Building and deploying influxdb:\t"
-docker build -t influxdb_alpine ./srcs/influxdb2 > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/influxdb.yaml >> log.log 2>> errlog.txt
+docker build -t influxdb_alpine ./srcs/influxdb > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/influxdb.yaml >> log.log 2>> errlog.txt
+
+printf "Building and deploying telegraf:\t"
+docker build -t telegraf_alpine --build-arg WIP=${MINIKUBE_IP} ./srcs/telegraf > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/telegraf.yaml >> log.log 2>> errlog.txt
 
 printf "Building and deploying grafana:\t\t"
-docker build -t grafana_alpine ./srcs/grafana2 > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/grafana.yaml >> log.log 2>> errlog.txt
+docker build -t grafana_alpine ./srcs/grafana > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/grafana.yaml >> log.log 2>> errlog.txt
 
 # sleep 5;
 # WORDPRESS_IP=`kubectl get services | awk '/wordpress-svc/ {print $4}'`

@@ -12,10 +12,12 @@ echo "start"
 rm -rf /root/.wp-cli
 echo "real start"
 cd /www
-wp core is-installed
+# wp core is-installed
 # if ! $(wp core is-installed --path=/www/); then
-if [ $? == 1 ]
-then
+if [ ls wpexists &> /dev/null ]; then 
+    echo "Wordpress has already been installed fuckface"
+else
+    touch wpexists
     echo "apparently exit status was 1"
     wp core download --allow-root
     echo "after core download"

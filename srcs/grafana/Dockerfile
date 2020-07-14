@@ -1,15 +1,18 @@
-FROM alpine:3.11.6
+FROM alpine:latest
 
-WORKDIR /usr/share/grafana
+RUN apk update \
+    && apk add libc6-compat \
+    && apk add curl gettext curl
 
-RUN apk update
-RUN apk add grafana \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/
+RUN wget https://dl.grafana.com/oss/release/grafana-6.7.2.linux-amd64.tar.gz \
+    && tar -xzvf grafana-6.7.2.linux-amd64.tar.gz \
+    && rm grafana-6.7.2.linux-amd64.tar.gz
 
-#COPY srcs/datasources.yml /usr/share/grafana/conf/provisioning/datasources/
-#COPY srcs/dashboards.yml /usr/share/grafana/conf/provisioning/dashboards/
-# COPY dashboards/ /usr/share/grafana/public/dashboards/
+# COPY grafana.db ./grafana-6.7.2/data/
+
+COPY setup.sh .
+RUN chmod +x setup.sh
 
 EXPOSE 3000
 
-ENTRYPOINT ["/usr/sbin/grafana-server", "web"]
+CMD ./setup.sh

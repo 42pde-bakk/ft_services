@@ -1,15 +1,15 @@
-FROM alpine:3.11.6
+FROM alpine:latest
 
-RUN apk update
-RUN apk add influxdb curl jq
-RUN apk add telegraf \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/
+RUN apk update && apk add influxdb gettext curl nano
 
-ENV API_URL=https://kubernetes
-#RUN export TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+RUN cp /etc/influxdb.conf /tmp/
+COPY influxdb.conf /etc/influxdb.conf
 
-COPY setup.sh /tmp/
-RUN chmod +x /tmp/setup.sh
+COPY setup.sh .
+RUN chmod +x setup.sh
+
+VOLUME [ "/var/lib/influxdb" ]
 
 EXPOSE 8086
-ENTRYPOINT ["/tmp/setup.sh"]
+
+CMD ./setup.sh

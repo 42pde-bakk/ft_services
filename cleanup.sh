@@ -9,7 +9,7 @@ Purple='\033[0;35m'       # Purple
 Cyan='\033[0;36m'         # Cyan
 White='\033[0;37m'        # White
 
-echo "${Yellow}---------------------------- Secret ------------------------------${Color_Off}"
+echo "${Yellow}---------------------------- Secrets ------------------------------${Color_Off}"
 kubectl delete secrets
 # kubectl delete pvc --all --grace-period=0 --force &
 
@@ -21,11 +21,6 @@ echo "${Yellow}---------------------------- Nginx ------------------------------
 kubectl delete services nginx
 kubectl delete deployment nginx
 kubectl delete configMaps/nginx-config
-
-echo "${Yellow}--------------------------- Mysql -------------------------------${Color_Off}"
-kubectl delete deployment/mysql
-kubectl delete services/mysql
-# kubectl delete configMaps/mysql-config
 
 echo "${Yellow}-------------------------- Wordpress ---------------------------${Color_Off}"
 kubectl delete deployment/wordpress-deployment
@@ -39,12 +34,22 @@ kubectl delete service/phpmyadmin-svc
 
 echo "${Yellow}-------------------------- Grafana ------------------------------${Color_Off}"
 kubectl delete deployment/grafana
-kubectl delete service/grafana
-kubectl delete configMaps/grafana-config
+kubectl delete service/grafana-svc
+# kubectl delete configMaps/grafana-config
+
+echo "${Yellow}--------------------------- Mysql -------------------------------${Color_Off}"
+kubectl delete deployment/mysql
+kubectl delete services/mysql
+# kubectl delete configMaps/mysql-config
 
 echo "${Yellow}-------------------------- InfluxDB -----------------------------${Color_Off}"
 kubectl delete deployment/influxdb
 kubectl delete service/influxdb
+kubectl delete configMaps/influxdb-config
+
+echo "${Yellow}-------------------------- Telegraf -----------------------------${Color_Off}"
+kubectl delete deployment/telegraf
+kubectl delete service/telegraf
 kubectl delete configMaps/influxdb-config
 
 echo "${Green}Cluster cleaned${Color_Off}"
