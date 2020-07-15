@@ -8,6 +8,7 @@ RUN wget https://dl.grafana.com/oss/release/grafana-6.7.2.linux-amd64.tar.gz \
     && tar -xzvf grafana-6.7.2.linux-amd64.tar.gz \
     && rm grafana-6.7.2.linux-amd64.tar.gz
 
+# COPY custom.ini /usr/share/grafana/conf/custom.ini
 # COPY grafana.db ./grafana-6.7.2/data/
 
 COPY setup.sh .

@@ -13,7 +13,7 @@ ln -s ~/goinfre/minikube ~/.minikube
 :> errlog.txt
 :> log.log
 # minikube delete
-# sh cleanup.sh >> log.log 2>> /dev/null
+sh cleanup.sh >> log.log 2>> /dev/null
 
 minikube start	--vm-driver=virtualbox \
 				--cpus=2 --memory 3000
@@ -51,13 +51,9 @@ docker build -t telegraf_alpine --build-arg WIP=${MINIKUBE_IP} ./srcs/telegraf >
 printf "Building and deploying grafana:\t\t"
 docker build -t grafana_alpine ./srcs/grafana > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/grafana.yaml >> log.log 2>> errlog.txt
 
-# sleep 5;
-# WORDPRESS_IP=`kubectl get services | awk '/wordpress-svc/ {print $4}'`
-# PHPMYADMIN_IP=`kubectl get services | awk '/phpmyadmin-svc/ {print $4}'`
-# GRAFANA_IP=`kubectl get services | awk '/grafana-svc/ {print $4}'`
-# printf "WP_IP=$WORDPRESS_IP, PMA=$PHPMYADMIN_IP, GRAF=$GRAFANA_IP\n"
+GRAFANA_IP=`kubectl get services | awk '/grafana-svc/ {print $4}'`
+sed "s/GRAFANA_IP/$GRAFANA_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html > srcs/nginx/homepage-pde-bakk/index.html
 printf "Building and deploying nginx:\t\t"
-# sed -e "s/PHPMYADMIN_IP/$PHPMYADMIN_IP/g" -e "s/WORDPRESS_IP/$WORDPRESS_IP/g" -e "s/GRAFANA_IP/$GRAFANA_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html > srcs/nginx/homepage-pde-bakk/index.html
 docker build -t nginx_alpine ./srcs/nginx > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/nginx.yaml >> log.log 2>> errlog.txt
 NGINX_IP=`kubectl get services | awk '/nginx/ {print $4}'`
 

@@ -14,7 +14,9 @@ echo "real start"
 cd /www
 # wp core is-installed
 # if ! $(wp core is-installed --path=/www/); then
-if [ ls wpexists &> /dev/null ]; then 
+# if [ ls wpexists &> /dev/null ]; then 
+wp core is-installed
+if ! [ $? == 0 ]; then
     echo "Wordpress has already been installed fuckface"
 else
     touch wpexists
