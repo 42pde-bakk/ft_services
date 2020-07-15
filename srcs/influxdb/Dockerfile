@@ -1,14 +1,11 @@
 FROM alpine:latest
 
-RUN apk update && apk add influxdb gettext curl nano
-
-RUN cp /etc/influxdb.conf /tmp/
-COPY influxdb.conf /etc/influxdb.conf
+RUN apk update && apk add influxdb \
+&& apk add --no-cache --upgrade bash
 
 COPY setup.sh .
-RUN chmod +x setup.sh
 
-VOLUME [ "/var/lib/influxdb" ]
+RUN chmod +x setup.sh
 
 EXPOSE 8086
 

@@ -1,55 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: telegraf-svc
+  labels:
+    app: telegraf-app
+spec:
+  # type: NodePort
+  ports:
+  - port: 4999
+    # nodePort: 4999
+    protocol: TCP
+    name: http
+  selector:
+    app: telegraf-app
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: telegraf
+  name: telegraf-deployment
   labels:
-    app: telegraf
+    app: telegraf-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: telegraf
+      app: telegraf-app
   template:
     metadata:
       labels:
-        app: telegraf
+        app: telegraf-app
     spec:
-      serviceAccountName: telegraf
       containers:
-        - image: telegraf_alpine
-          imagePullPolicy: Never
-          name: telegraf
-          ports:
-          - containerPort: 8125
-          name: telegraf
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: telegraf
-# spec:
-#   selector:
-#     app: telegraf
-#   ports:
-#   - protocol: UDP
-#     port: 8125
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: telegraf
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - kind: ServiceAccount
-    name: telegraf
-    namespace: default
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: telegraf
-  labels:
-    app: telegraf
+      - name: telegraf
+        image: telegraf_alpine
+        ports:
+        - containerPort: 4999
+        imagePullPolicy: Never
+        volumeMounts:
+        - name: dockersock
+          mountPath: "/var/run/docker.sock"
+        env:
+          - name: INFLUX_USER
+            value: telegraf
+          - name: INFLUX_URL
+            value: "http://influxdb-svc:8086"
+          - name: INFLUX_SKIP_DATABASE_CREATION
+            value: "false"
+          - name: INFLUX_PASSWORD
+            value: "pass"
+      volumes:
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock

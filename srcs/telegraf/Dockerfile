@@ -1,23 +1,19 @@
 FROM alpine:latest
-ARG WIP
 
-ENV MINIKUBEIP=${WIP}
-RUN apk update \
-    && apk add curl nano gettext
-
+# Install telegraf for monitoring
 RUN mkdir /etc/telegraf \
-    && wget https://dl.influxdata.com/telegraf/releases/telegraf-1.13.3-static_linux_amd64.tar.gz \
-    && tar -C . -xzf telegraf-1.13.3-static_linux_amd64.tar.gz \
-    && chmod +x telegraf/* \
-    && cp telegraf/telegraf /usr/bin/ \
-    && rm -rf telegraf-1.13.3-static_linux_amd64.tar.gz telegraf/
+&& wget https://dl.influxdata.com/telegraf/releases/telegraf-1.13.3-static_linux_amd64.tar.gz \
+&& tar -C . -xzf telegraf-1.13.3-static_linux_amd64.tar.gz \
+&& chmod +x telegraf/* \
+&& cp telegraf/telegraf /usr/bin/ \
+&& rm -rf *.tar.gz* telegraf/ \
+&& rm -rf /var/cache/apk/*
 
-# COPY telegraf.conf /tmp/telegraf.conf
 COPY telegraf.conf /etc/telegraf/telegraf.conf
-
 COPY setup.sh .
+
 RUN chmod +x setup.sh
 
-EXPOSE 8125
+EXPOSE 4999
 
 CMD ./setup.sh

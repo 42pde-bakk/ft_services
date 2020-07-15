@@ -1,60 +1,44 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: grafana-svc
-spec:
-  type: LoadBalancer
-  selector:
-    app: grafana
-  ports:
-  - protocol: TCP
-    port: 3000
-    targetPort: 3000
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  annotations:
-  creationTimestamp: null
-  generation: 1
+  name: grafana
   labels:
     app: grafana
-  name: grafana
 spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
+  ports:
+  - port: 80
+    targetPort: 3000
   selector:
-    matchLabels:
-      app: grafana
+    app: grafana
+  type: LoadBalancer
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
   strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
+    type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: grafana
     spec:
       containers:
-      - image: grafana_alpine
-        imagePullPolicy: Never
-        env:
-        - name: GF_SECURITY_ADMIN_USER
-          value: peer
-        - name: GF_SECURITY_ADMIN_PASSWORD
-          value: pass
+      - name: grafana
+        image: grafana/grafana
         ports:
         - containerPort: 3000
-          name: grafana
-        name: grafana
-        resources: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      terminationGracePeriodSeconds: 30
+          name: http
+        volumeMounts:
+        - name: grafana-data
+          mountPath: /var/lib/grafana
+      volumes:
+      - name: grafana-data
+        gcePersistentDisk:
+          pdName: grafana-1
+          fsType: ext4
