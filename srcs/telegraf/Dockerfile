@@ -18,4 +18,5 @@ RUN chmod +x setup.sh
 
 EXPOSE 4999
 
-CMD ./setup.sh
+# CMD ./setup.sh
+ENTRYPOINT ["tail", "-f", "/dev/null"]

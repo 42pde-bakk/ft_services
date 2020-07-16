@@ -51,4 +51,9 @@ echo "${Yellow}-------------------------- Telegraf -----------------------------
 kubectl delete deployment/telegraf-deployment
 kubectl delete service/telegraf-svc
 
+echo "${Yellow}-------------------------- Clusterroles -----------------------------${Color_Off}"
+kubectl delete clusterrole influx:cluster:viewer
+kubectl delete clusterrole influx:telegraf
+kubectl delete clusterrolebinding influx:telegraf:viewer
+
 echo "${Green}Cluster cleaned${Color_Off}"

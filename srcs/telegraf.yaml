@@ -48,7 +48,45 @@ spec:
             value: "false"
           - name: INFLUX_PASSWORD
             value: "pass"
+          - name: NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
       volumes:
       - name: dockersock
         hostPath:
           path: /var/run/docker.sock
+
+
+---
+
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRole
+# metadata:
+#   name: influx:stats:viewer
+#   labels:
+#     rbac.authorization.k8s.io/aggregate-view-telegraf-stats: "true"
+# rules:
+#   - apiGroups: [""]
+#     resources: ["nodes/proxy"]
+#     verbs: ["get", "watch", "list"]
+
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRoleBinding
+# metadata:
+#   name: telegraf
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: cluster-admin
+# subjects:
+# - kind: ServiceAccount
+#   name: telegraf
+#   namespace: default
+# ---
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: telegraf
+#   labels:
+#     app: influxdb

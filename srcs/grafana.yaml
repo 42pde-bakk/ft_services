@@ -14,13 +14,17 @@ spec:
 
 ---
 
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana
   labels:
     app: grafana
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
   strategy:
     type: Recreate
   template:
