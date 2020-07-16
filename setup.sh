@@ -16,7 +16,10 @@ ln -s ~/goinfre/minikube ~/.minikube
 sh cleanup.sh >> log.log 2>> /dev/null
 
 minikube start	--vm-driver=virtualbox \
-				--cpus=2 --memory 3000
+				--cpus=2 --memory 3000 \
+				--addons metrics-server \
+				--bootstrapper=kubeadm \
+  				--extra-config=kubelet.authentication-token-webhook=true
 
 minikube addons enable metallb >> log.log 2>>errlog.txt && sleep 2 && kubectl apply -f ./srcs/metallb.yaml >> log.log 2>>errlog.txt
 # kubectl apply -f ./srcs/megametallb.yaml >> log.log 2>>errlog.txt
@@ -45,7 +48,7 @@ docker build -t phpmyadmin_alpine ./srcs/phpmyadmin > /dev/null 2>>errlog.txt &&
 printf "Building and deploying influxdb:\t"
 docker build -t influxdb_alpine srcs/influxdb > /dev/null 2>>errlog.txt && { printf "[${grn}OK${end}]\n"; kubectl apply -f srcs/influxdb.yaml >> log.log 2>> errlog.txt; } || printf "[${red}NO${end}]\n"
 printf "Building and deploying telegraf:\t"
-docker build -t telegraf_alpine srcs/telegraf > /dev/null 2>>errlog.txt && { printf "[${grn}OK${end}]\n"; kubectl apply -f srcs/telegraf.yaml >> log.log 2>> errlog.txt; } || printf "[${red}NO${end}]\n"
+docker build -t telegraf_alpine --build-arg INCOMING=${MINIKUBE_IP} srcs/telegraf > /dev/null 2>>errlog.txt && { printf "[${grn}OK${end}]\n"; kubectl apply -f srcs/telegraf.yaml >> log.log 2>> errlog.txt; } || printf "[${red}NO${end}]\n"
 # printf "Building and deploying grafana:\t\t"
 # docker build -t grafana_alpine ./srcs/grafana > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/grafana.yaml >> log.log 2>> errlog.txt
 

@@ -43,13 +43,12 @@ kubectl delete services/mysql
 # kubectl delete configMaps/mysql-config
 
 echo "${Yellow}-------------------------- InfluxDB -----------------------------${Color_Off}"
-kubectl delete deployment/influxdb
-kubectl delete service/influxdb
-kubectl delete configMaps/influxdb-config
+kubectl delete deployment/influxdb-deployment
+kubectl delete service/influxdb-svc
+# kubectl delete configMaps/influxdb-config
 
 echo "${Yellow}-------------------------- Telegraf -----------------------------${Color_Off}"
-kubectl delete deployment/telegraf
-kubectl delete service/telegraf
-kubectl delete configMaps/influxdb-config
+kubectl delete deployment/telegraf-deployment
+kubectl delete service/telegraf-svc
 
 echo "${Green}Cluster cleaned${Color_Off}"
