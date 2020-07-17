@@ -36,9 +36,6 @@ spec:
         ports:
         - containerPort: 4999
         imagePullPolicy: Never
-        volumeMounts:
-        - name: dockersock
-          mountPath: "/var/run/docker.sock"
         env:
           - name: INFLUX_USER
             value: telegraf
@@ -52,41 +49,32 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: spec.nodeName
-      volumes:
-      - name: dockersock
-        hostPath:
-          path: /var/run/docker.sock
-
 
 ---
 
-# apiVersion: rbac.authorization.k8s.io/v1
-# kind: ClusterRole
-# metadata:
-#   name: influx:stats:viewer
-#   labels:
-#     rbac.authorization.k8s.io/aggregate-view-telegraf-stats: "true"
-# rules:
-#   - apiGroups: [""]
-#     resources: ["nodes/proxy"]
-#     verbs: ["get", "watch", "list"]
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: role-rbac
+  namespace: default
+rules:
+- apiGroups: [ "", "extensions", "apps" ]
+  resources: [ "daemonsets", "deployments", "endpoints", "ingresses", "nodes", "persistentvolumes", "persistentvolumeclaims", "pods", "services", "statefulsets" ]
+  verbs: [ "get", "list", "watch"]
 
-# apiVersion: rbac.authorization.k8s.io/v1
-# kind: ClusterRoleBinding
-# metadata:
-#   name: telegraf
-# roleRef:
-#   apiGroup: rbac.authorization.k8s.io
-#   kind: ClusterRole
-#   name: cluster-admin
-# subjects:
-# - kind: ServiceAccount
-#   name: telegraf
-#   namespace: default
-# ---
-# apiVersion: v1
-# kind: ServiceAccount
-# metadata:
-#   name: telegraf
-#   labels:
-#     app: influxdb
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rolebinding-rbac
+  namespace: default
+roleRef:
+  kind: Role
+  name: role-rbac
+  apiGroup: ""
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+  # apiGroup: ""

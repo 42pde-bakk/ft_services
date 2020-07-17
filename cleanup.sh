@@ -55,5 +55,7 @@ echo "${Yellow}-------------------------- Clusterroles -------------------------
 kubectl delete clusterrole influx:cluster:viewer
 kubectl delete clusterrole influx:telegraf
 kubectl delete clusterrolebinding influx:telegraf:viewer
+kubectl delete role role-rbac
+kubectl delete rolebinding rolebinding-rbac
 
 echo "${Green}Cluster cleaned${Color_Off}"

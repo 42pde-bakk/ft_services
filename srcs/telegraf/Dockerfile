@@ -12,11 +12,12 @@ RUN mkdir /etc/telegraf \
 
 RUN apk add curl nano gettext
 COPY defaulttelegraf.conf /etc/telegraf/telegraf.conf
+# COPY djevayotelegraf.conf /etc/telegraf/telegraf.conf
 COPY setup.sh .
 
 RUN chmod +x setup.sh
 
 EXPOSE 4999
 
-# CMD ./setup.sh
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+CMD ./setup.sh
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
