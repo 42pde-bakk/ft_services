@@ -16,10 +16,10 @@ ln -s ~/goinfre/minikube ~/.minikube
 sh cleanup.sh >> log.log 2>> /dev/null
 
 minikube start	--vm-driver=virtualbox \
-				--cpus=3 --memory 3000 \
+				--cpus=2 --memory 3000 \
 				--addons metrics-server \
-				--bootstrapper=kubeadm \
   				--extra-config=kubelet.authentication-token-webhook=true
+				# --bootstrapper=kubeadm \
 
 minikube addons enable metallb >> log.log 2>>errlog.txt && sleep 2 && kubectl apply -f ./srcs/metallb.yaml >> log.log 2>>errlog.txt
 # kubectl apply -f ./srcs/megametallb.yaml >> log.log 2>>errlog.txt
