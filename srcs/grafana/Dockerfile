@@ -19,13 +19,7 @@ COPY datasource/datasource.yaml /usr/share/grafana/conf/provisioning/datasources
 RUN mkdir /usr/share/grafana/conf/provisioning/dashboards/mine
 COPY dashboards/*.json /usr/share/grafana/conf/provisioning/dashboards/mine/
 COPY dashboards/sample.yaml /usr/share/grafana/conf/provisioning/dashboards/
-# COPY datasource/grafana.db /usr/share/grafana/data/grafana.db
-COPY setup.sh /tmp/
-RUN chmod +x /tmp/setup.sh
-
 
 EXPOSE 3000
 
-# CMD ./setup.sh
 ENTRYPOINT [ "/usr/sbin/grafana-server", "web" ]
-# ENTRYPOINT ["tail", "-f", "/dev/null"]

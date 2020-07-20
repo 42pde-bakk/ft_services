@@ -3,5 +3,5 @@ function logs() {
 }
 
 function attach() {
-	kubectl exec -it $(kubectl get pods | grep "$1" | grep -v "Terminating" | awk '{print $1}') sh
+	kubectl exec -it $(kubectl get pods | grep "$1" | grep -v "Terminating" | awk '{print $1}') -- sh
 }

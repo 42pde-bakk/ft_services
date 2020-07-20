@@ -10,15 +10,12 @@ define( 'DB_USER', '${DB_USER}' );
 define( 'DB_PASSWORD', '${DB_PASS}');
 
 /** MySQL hostname */
-// define( 'DB_HOST', 'mysql.default.svc.cluster.local:3306' );
 define( 'DB_HOST', '${DB_HOST}' );
 
-// define('WP_HOME', 'http://${WORDPRESS_SVC_SERVICE_HOST}:${WORDPRESS_SVC_SERVICE_PORT}' );
-// define('WP_SITEURL', 'http://${WORDPRESS_SVC_SERVICE_HOST}:${WORDPRESS_SVC_SERVICE_PORT}' );
-// define('WP_HOME', 'http://192.168.99.100:5050' );
-// define('WP_SITEURL', 'http://192.168.99.100:5050' );
-define('WP_HOME', '/wordpress/' );
-define('WP_SITEURL', '/wordpress/' );
+define('WP_HOME', 'http://192.168.99.202:5050' );
+define('WP_SITEURL', 'http://192.168.99.202:5050' );
+// define('WP_HOME', 'http://wordpress-svc:5050' );
+// define('WP_SITEURL', 'http://wordpress-svc:5050' );
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );

@@ -2,17 +2,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: phpmyadmin-svc
-  # annotations:
-  #   metallb.universe.tf/allow-shared-ip: onlyone
+  annotations:
+    metallb.universe.tf/address-pool: pma-ip
   labels:
     app: phpmyadmin-deployment
 spec:
+  type: LoadBalancer
   selector:
     app: phpmyadmin-deployment
   ports:
   - port: 5000
-    targetPort: 80
-  # loadBalancerIP: 10.0.0.2
+    targetPort: 5000
+
 ---
 
 apiVersion: apps/v1
@@ -34,7 +35,7 @@ spec:
         image: phpmyadmin_alpine
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 80
+        - containerPort: 5000
         volumeMounts:
         - name: phpmyadmin-persistent-storage
           mountPath: /var/www/localhost/htdocs

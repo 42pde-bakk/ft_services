@@ -54,8 +54,10 @@ printf "Building and deploying grafana:\t\t"
 docker build -t grafana_alpine ./srcs/grafana > /dev/null 2>>errlog.txt && { printf "[${grn}OK${end}]\n"; kubectl apply -f ./srcs/grafana.yaml >> log.log 2>> errlog.txt; } || printf "[${red}NO${end}]\n"
 
 sleep 3;
+WORDPRESS_IP=`kubectl get services | awk '/wordpress-svc/ {print $4}'`
+PHPMYADMIN_IP=`kubectl get services | awk '/phpmyadmin-svc/ {print $4}'`
 GRAFANA_IP=`kubectl get services | awk '/grafana-svc/ {print $4}'`
-sed "s/GRAFANA_IP/$GRAFANA_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html > srcs/nginx/homepage-pde-bakk/index.html
+sed -e "s/GRAFANA_IP/$GRAFANA_IP/g" -e "s/WORDPRESS_IP/$WORDPRESS_IP/g" -e "s/PHPMYADMIN_IP/$PHPMYADMIN_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html > srcs/nginx/homepage-pde-bakk/index.html
 printf "Building and deploying nginx:\t\t"
 docker build -t nginx_alpine ./srcs/nginx > /dev/null 2>>errlog.txt && printf "[${grn}OK${end}]\n" || printf "[${red}NO${end}]\n"; kubectl apply -f ./srcs/nginx.yaml >> log.log 2>> errlog.txt
 NGINX_IP=`kubectl get services | awk '/nginx/ {print $4}'`
@@ -63,6 +65,8 @@ NGINX_IP=`kubectl get services | awk '/nginx/ {print $4}'`
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)" >> log.log 2>> errlog.txt
 printf "Minikube IP: ${MINIKUBE_IP}\n"
 printf "Nginx IP: ${NGINX_IP}\n"
+printf "Wordpress IP: ${WORDPRESS_IP}\n"
+printf "Phpmyadmin IP: ${PHPMYADMIN_IP}\n"
 printf "Grafana IP: ${GRAFANA_IP}\n"
 # open http://$MINIKUBE_IP
 # open http://$NGINX_IP:80

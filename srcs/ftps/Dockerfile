@@ -10,6 +10,7 @@ RUN mkdir -p /var/ftp
 COPY vsftpd.conf /etc/vsftpd/vsftpd.conf
 COPY setup.sh /tmp/
 RUN chmod +x /tmp/setup.sh
+RUN mkdir /peer
 
 EXPOSE 20 21 30000
 

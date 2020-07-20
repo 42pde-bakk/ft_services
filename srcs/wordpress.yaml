@@ -1,18 +1,32 @@
 apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wordpress-pv-claim
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: wordpress-svc
-  # annotations:
-  #   metallb.universe.tf/allow-shared-ip: onlyone
+  annotations:
+    metallb.universe.tf/address-pool: wp-ip
   labels:
     app: wordpress-deployment
 spec:
+  type: LoadBalancer
   selector:
     app: wordpress-deployment
   ports:
   - name: wordpress
     port: 5050
-    targetPort: 80
+    targetPort: 5050
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -45,4 +59,11 @@ spec:
         - name: DB_HOST
           value: mysql
         ports:
-          - containerPort: 80
+          - containerPort: 5050
+        volumeMounts:
+        - name: wordpress-persistent-storage
+          mountPath: /www
+      volumes:
+      - name: wordpress-persistent-storage
+        persistentVolumeClaim:
+          claimName: wordpress-pv-claim

@@ -9,3 +9,4 @@ providers:
   type: file
   options:
     path: /usr/share/grafana/conf/provisioning/dashboards/mine
+ 
