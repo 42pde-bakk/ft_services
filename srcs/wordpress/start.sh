@@ -14,5 +14,3 @@ cd /www
 su -c "/tmp/wpinstall.sh" - www
 rm -rf /root/.wp-cli
 
-php-fpm7
-nginx -g "daemon off;"

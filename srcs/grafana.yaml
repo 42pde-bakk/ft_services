@@ -44,6 +44,4 @@ spec:
           value: peer
         - name: GF_SECURITY_ADMIN_PASSWORD
           value: pass
-        # - name: WORKING_DIR
-        #   value: /usr/share/grafana/
 

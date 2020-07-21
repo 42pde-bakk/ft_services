@@ -5,10 +5,8 @@ metadata:
   labels:
     app: telegraf-app
 spec:
-  # type: NodePort
   ports:
   - port: 4999
-    # nodePort: 4999
     protocol: TCP
     name: http
   selector:
@@ -77,4 +75,3 @@ subjects:
 - kind: ServiceAccount
   name: default
   namespace: default
-  # apiGroup: ""

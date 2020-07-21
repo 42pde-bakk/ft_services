@@ -1,7 +1,7 @@
 FROM alpine:latest
 
-RUN apk update && apk add influxdb \
-&& apk add --no-cache --upgrade bash
+RUN apk update && apk add influxdb && \
+    apk add --no-cache --upgrade bash
 
 COPY setup.sh .
 

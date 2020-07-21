@@ -11,7 +11,7 @@ RUN mkdir /etc/telegraf && \
     rm -rf /var/cache/apk/*
 
 RUN apk add curl nano gettext
-COPY defaulttelegraf.conf /etc/telegraf/telegraf.conf
+COPY peertelegraf.conf /etc/telegraf/telegraf.conf
 COPY setup.sh .
 
 RUN chmod +x setup.sh
